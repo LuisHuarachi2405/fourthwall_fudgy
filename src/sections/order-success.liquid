@@ -1,0 +1,137 @@
+<div class="order-success" data-testid="main.single.section">
+  <div class="container container--8 wrapper">
+    <header class="order-success__header">
+      <h1 class="order-success__heading">
+        Your order #{{ order.friendly_id }} is confirmed.
+      </h1>
+
+      <div class="order-success__subheading">
+        <p class="order-success__subheading-line">
+          Thank you for your support! We sent a confirmation to {{ order.email }}.
+          <br>We'll email you an update when your order ships!</p>
+      </div>
+
+      <div class="order-success__social-share">
+        {% include 'order-success-twitter' %}
+      </div>
+    </header>
+
+    <div class="order-success__main">
+      <div class="grid grid--center">
+        <div class="grid__column grid__column--12 grid__column--5@sm edge-mobile">
+          <aside class="order-success__sidebar">
+            <div class="order-success__sidebar-section">
+              <h3 class="order-success__sidebar-heading">Shipping to</h3>
+              <address class="order-success__address">
+                {{ order.shipping_address.first_name }} {{ order.shipping_address.last_name }}<br>
+                {{ order.shipping_address.address1 }}<br>
+                {% if order.shipping_address.address2 != '' %}
+                  {{ order.shipping_address.address2 }}<br>
+                {% endif %}
+                {{ order.shipping_address.city }}, {{ order.shipping_address.province }} {{ order.shipping_address.zip }}<br>
+                {{ order.shipping_address.country }}
+              </address>
+            </div>
+
+            <div class="order-success__sidebar-section">
+              <h3 class="order-success__sidebar-heading">Contact email</h3>
+              <p>{{ order.email || replace: "@", "&#8203;@" }}</p>
+            </div>
+
+            {% if order.message %}
+              <div class="order-success__sidebar-section">
+                <h3 class="order-success__sidebar-heading">Message left</h3>
+                <p>{{ order.message }}</p>
+              </div>
+            {% endif %}
+          </aside>
+        </div>
+
+        <div class="grid__column grid__column--12 grid__column--7@sm grid__column--first@sm">
+          <div class="order-success__content">
+            <div class="order-success__content-section">
+              <div class="order-success__shipments">
+                <div class="order-success__shipment">
+                  <ul class="order-success__items">
+                    {% for line_item in order.line_items %}
+                      <li class="order-success__item">
+                        <div class="inline-image inline-image--columns">
+                          <a href="{{ line_item.url }}" class="inline-image__image inline-image__image--small">
+                            <div class="image">
+                              <div class="inline-image__image-object">
+                                <img src="{{ line_item.image | img_url: '120x' | img_tag }}" alt="">
+                              </div>
+                            </div>
+                          </a>
+                          <div class="inline-image__content">
+                            <a href="{{ line_item.url }}" class="inline-image__link">
+                              <h4 class="inline-image__heading">{{ line_item.product_title }}</h4>
+                            </a>
+                            <p class="inline-image__subheading">{{ line_item.variant_title }}</p>
+                          </div>
+                          <div class="inline-image__quantity">
+                            {{ line_item.quantity }}
+                          </div>
+                          <div class="inline-image__price">
+                            {{ line_item.final_price | money }}
+                          </div>
+                        </div>
+                      </li>
+                    {% endfor %}
+                  </ul>
+                </div>
+              </div>
+            </div>
+
+            {% if order.donation %}
+            <div class="order-success__content-section">
+              <div class="order-success__donation">
+                <div class="inline-image inline-image--columns">
+                  <div class="inline-image__image inline-image__image--small">
+                    <div class="inline-image__donation-image">
+                      <span class="inline-image__donation-image-icon">$</span>
+                    </div>
+                  </div>
+                  <div class="inline-image__content">
+                    <div class="inline-image__heading">Donation</div>
+                  </div>
+                  <div class="inline-image__quantity">
+                  </div>
+                  <div class="inline-image__price">
+                    {{ order.donation | money }}
+                  </div>
+                </div>
+              </div>
+            </div>
+            {% endif %}
+
+            <div class="order-success__content-section">
+              <div class="order-success__summary">
+                <table class="table">
+                  <tbody>
+                    <tr>
+                      <td>Subtotal</td>
+                      <td>{{ order.line_items_subtotal_price | money }}</td>
+                    </tr>
+                    <tr>
+                      <td>Shipping</td>
+                      <td>{{ order.shipping_price | money }}</td>
+                    </tr>
+                    <tr>
+                      <td>Sales tax</td>
+                      <td>{{ order.tax_price | money }}</td>
+                    </tr>
+                    <tr>
+                      <td><strong>Total</strong></td>
+                      <td><strong>{{ order.total_price | money }}</strong></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

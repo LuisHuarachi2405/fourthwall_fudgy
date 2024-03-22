@@ -1,0 +1,101 @@
+.gallery {
+  $this: &;
+
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: column;
+
+  @include media-query(md) {
+    flex-direction: row;
+  }
+
+  &__main {
+    position: relative;
+    flex: 1 0 100%;
+
+    width: 100%;
+
+    @include media-query(md) {
+      flex: 1 0 auto;
+      width: auto;
+    }
+  }
+
+  &__thumbs {
+    position: relative;
+
+    width: 100%;
+
+    @include media-query(sm) {
+      overflow: hidden;
+    }
+
+    @include media-query(md) {
+      order: -1;
+      flex: 0 0 98px;
+      max-width: 98px;
+    }
+  }
+
+  &__slide {
+    position: relative;
+    width: 100%;
+    height: auto;
+
+    &:not(:first-child) {
+      display: none;
+    }
+  }
+
+  &__image {
+    display: flex;
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    align-items: center;
+    justify-content: center;
+
+    margin: auto;
+  }
+
+  &__image-container {
+    position: relative;
+    height: 100%;
+    background: get-color(image-background);
+
+    &--background-color {
+      background: get-color(product-image-background);
+    }
+
+    &::after {
+      content: '';
+      display: block;
+      padding-bottom: $gallery-img-ratio-padding;
+    }
+  }
+
+  &__image-holder {
+    position: relative;
+    width: 100%;
+    max-height: 100%;
+    overflow: hidden;
+  }
+
+  &__image-object {
+    max-height: 100%;
+  }
+
+  &__nav {
+    display: none;
+  }
+
+  &--product {
+    position: relative;
+
+    @include media-query(sm) {
+      overflow: hidden;
+    }
+  }
+}

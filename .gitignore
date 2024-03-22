@@ -1,0 +1,8 @@
+node_modules
+dist
+archive
+yarn.lock
+.env
+.idea
+src/assets/*.css
+.DS_Store

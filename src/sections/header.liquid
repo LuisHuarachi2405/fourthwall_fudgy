@@ -1,0 +1,208 @@
+{% if section.settings.show_announcement_bar == true %}
+  {% include 'announcement-bar', type: 'normal' %}
+{% endif -%}
+
+<div data-testid="main.single.section" class="header">
+  <div class=" wrapper">
+    <div class="header__sections">
+      <div class="header__section header__section--left">
+        <div class="header__logo visible@sm">
+          {% if request.page_type == 'index' %}
+            <h1 class="header__logo visible@sm">
+          {% else %}
+            <div class="header__logo visible@sm">
+          {% endif %}
+
+            <a href="{{ routes.root_url | localized_url }}" class="header__logo-link">
+              {% include 'logo', class: "header__logo-image" %}
+            </a>
+
+          {% if request.page_type == 'index' %}
+            </h1>
+          {% else %}
+            </div>
+          {% endif %}
+        </div>
+
+        <div class="hidden@sm">
+          <button
+            data-drawer-trigger-primary="mobile-menu"
+            class="header__icon header__icon--hamburger"
+          >
+            {% include 'icon-hamburger' %}
+          </button>
+        </div>
+      </div>
+
+      <div class="header__section header__section--middle">
+        <div class="header__logo hidden@sm">
+          <a href="{{ routes.root_url | localized_url }}" class="header__logo-link">
+            {% include 'logo', class: "header__logo-image" %}
+          </a>
+        </div>
+
+        <nav class="header__nav visible@sm">
+          <ul class="header__list header__list--nav">
+            {% for link in linklists[section.settings.menu].links %}
+              <li class="header__list-item">
+                <a
+                  href="{{ link.url | localized_url }}"
+                  class="header__link{% if link.links != blank %} header__link--icon{% endif %}"
+                >
+                  {{ link.title }}
+
+                  {% if link.links != blank %}
+                    <span class="header__link-icon">
+                      {% include 'icon-chevron-bottom' %}
+                    </span>
+                  {% endif %}
+                </a>
+
+                {% if link.links != blank %}
+                  <div class="header__dropdown">
+                    <ul class="header__dropdown-inner">
+                      {% for childlink in link.links %}
+                        <li class="header__dropdown-item">
+                          <a class="header__dropdown-link" href="{{ childlink.url | localized_url }}">
+                            {{ childlink.title }}
+                          </a>
+                        </li>
+                      {% endfor %}
+                    </ul>
+                  </div>
+                {% endif %}
+              </li>
+            {% endfor %}
+          </ul>
+        </nav>
+      </div>
+
+      <div class="header__section header__section--right">
+        <ul class="header__list header__list--right-nav">
+          {% if section.settings.show_currency_selector == true and shop.enabled_currencies.size > 1 %}
+            <li class="header__list-item visible@sm">
+              <a class="header__link header__link--icon">
+                 {{ cart_currency }}
+
+                {% if shop.enabled_currencies != blank %}
+                  <span class="header__link-icon">
+                    {% include 'icon-chevron-bottom' %}
+                  </span>
+                {% endif %}
+              </a>
+
+              {% if shop.enabled_currencies != blank %}
+                <div class="header__dropdown header__dropdown--content">
+                  <ul class="header__dropdown-inner">
+                    {% for currency in shop.enabled_currencies %}
+                      <li class="header__dropdown-item">
+                        <a class="header__dropdown-link" href="/localization?currency={{ currency }}&return_to={{ request_page }}">
+                          {{ currency }}
+                        </a>
+                      </li>
+                    {% endfor %}
+                  </ul>
+                </div>
+              {% endif %}
+            </li>
+          {% endif %}
+
+          {% if shop.metafields.memberships.enabled and membership_tiers.size > 0 %}
+            <li class="header__list-item visible@sm">
+              <a href="/supporters" class="header__icon header__icon--account">
+                {% include 'icon-account' %}
+              </a>
+            </li>
+          {% endif %}
+
+          <li class="header__list-item">
+            <a href="{{ routes.cart_url | localized_url }}" class="header__icon header__icon--cart">
+              {% include 'cart-widget' %}
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% include 'mobile-menu' %}
+
+<script>
+  const currencyData = {
+    locale: "{{ currency.locale }}",
+    currency: "{{ cart_currency }}"
+  }
+</script>
+
+{% schema %}
+  {
+    "name": "Header",
+    "settings": [
+      {
+        "type": "link_list",
+        "id": "menu",
+        "label": "Menu",
+        "default": "main"
+      },
+      {
+        "type": "checkbox",
+        "id": "show_currency_selector",
+        "label": "Show currency selector",
+        "default": true
+      },
+      {
+        "type": "header",
+        "content": "Announcement bar"
+      },
+      {
+        "type": "select",
+        "id": "timer_type",
+        "label": "Timer type",
+        "options": [
+          {
+            "value": "simple",
+            "label": "Simple"
+          },
+          {
+            "value": "custom",
+            "label": "Custom"
+          }
+        ],
+        "default": "simple"
+      },
+      {
+        "type": "checkbox",
+        "id": "show_announcement_bar",
+        "label": "Show announcement bar",
+        "default": false
+      },
+      {
+        "type": "text",
+        "id": "label",
+        "label": "Label",
+        "default": "Drop 001"
+      },
+      {
+        "type": "checkbox",
+        "id": "enable_countdown",
+        "label": "Enable countdown",
+        "default": false
+      },
+      {
+        "type": "text",
+        "id": "countdown_start_date",
+        "label": "Countdown start date",
+        "info": "e.g. August 21, 2021 07:00:00",
+        "default": "August 21, 2021 07:00:00"
+      },
+      {
+        "type": "text",
+        "id": "countdown_end_date",
+        "label": "Countdown end date",
+        "info": "e.g. August 24, 2021 20:00:00",
+        "default": "August 24, 2021 20:00:00"
+      }
+    ]
+  }
+{% endschema %}

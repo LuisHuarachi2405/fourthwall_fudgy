@@ -1,0 +1,18 @@
+.static-page {
+  &__header {
+    margin-bottom: 40px;
+    text-align: center;
+
+    @include media-query(sm) {
+      margin-bottom: 55px;
+    }
+  }
+
+  &__heading {
+    font-size: font-size-heading(38px);
+
+    @include media-query(sm) {
+      font-size: font-size-heading(46px);
+    }
+  }
+}

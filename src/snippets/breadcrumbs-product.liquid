@@ -1,0 +1,23 @@
+{% assign breadcrumbs_currency = '/en-' | append: cart_currency | downcase %}
+
+<div class="breadcrumbs breadcrumbs--product">
+  <ul class="breadcrumbs__list">
+    <li class="breadcrumbs__item">
+      <a href="{{ breadcrumbs_currency }}" class="breadcrumbs__link">
+        Home
+      </a>
+    </li>
+
+    <li class="breadcrumbs__item">
+      <a href="{{ breadcrumbs_currency }}/collections/all" class="breadcrumbs__link">
+        Store
+      </a>
+    </li>
+  
+    <li class="breadcrumbs__item">
+      <span class="breadcrumbs__current">
+        {{ product.title }}
+      </span>
+    </li>
+  </ul>
+</div>

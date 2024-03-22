@@ -1,0 +1,156 @@
+.video {
+  $this: &;
+
+  position: relative;
+
+  border-radius: $img-border-radius;
+
+  overflow: hidden;
+
+  background-color: get-color(background-pale);
+
+  &:hover,
+  &.paused,
+  &--controls-visible {
+    #{$this}__controls {
+      opacity: 1;
+    }
+  }
+
+  &__video {
+    display: block;
+    width: 100%;
+    cursor: pointer;
+  }
+
+  &__init {
+    display: flex;
+    position: absolute;
+    top: 0;
+    left: 0;
+    align-items: center;
+    justify-content: center;
+
+    width: 100%;
+    height: 100%;
+
+    background-color: rgba(get-color(black), 0.2);
+    cursor: pointer;
+  }
+
+  &__controls {
+    display: flex;
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    align-items: flex-end;
+
+    opacity: 0;
+
+    transition: opacity $transition-time;
+
+    padding: 0 20px 16px;
+    width: 100%;
+    height: 96px;
+
+    background-image: linear-gradient(
+      rgba(get-color(black), 0) 0%,
+      rgba(get-color(black), 0.6) 100%
+    );
+  }
+
+  &__controls-section {
+    display: flex;
+
+    &--right {
+      margin-left: auto;
+    }
+  }
+
+  &__control {
+    display: flex;
+  }
+
+  &__button {
+    opacity: 0.85;
+
+    transition: opacity $transition-time;
+
+    border: 0;
+    padding: 8px;
+
+    background: none;
+
+    &:hover {
+      opacity: 1;
+    }
+
+    &.active {
+      #{$this}__icon {
+        &--not-active {
+          display: none;
+        }
+        &--active {
+          display: flex;
+        }
+      }
+    }
+  }
+
+  &__icon {
+    display: flex;
+    align-items: center;
+
+    min-width: 24px;
+    height: 22px;
+
+    &--active {
+      display: none;
+    }
+
+    &--mute {
+      min-width: 32px;
+    }
+
+    &--init-play {
+      justify-content: center;
+
+      border-radius: 100%;
+
+      width: 80px;
+      height: 80px;
+
+      background: rgba(#fff, 0.3);
+
+      svg {
+        transform: translateX(1px);
+
+        width: 20px;
+        height: 20px;
+      }
+    }
+  }
+
+  &__audio {
+    display: flex;
+    align-items: center;
+
+    &:hover {
+      #{$this}__volume {
+        opacity: 1;
+        width: 90px;
+      }
+    }
+  }
+
+  &__volume {
+    display: flex;
+    align-items: center;
+
+    opacity: 0;
+
+    transition: opacity $transition-time, width $transition-time;
+
+    width: 0;
+  }
+}

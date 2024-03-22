@@ -1,0 +1,126 @@
+<section data-section-id="{{ section.id }}" data-testid="main.single.section" class="recent-videos recent-videos--{{ section.id }}">
+  <div class="container wrapper">
+    {% if social_networks.youtube %}
+      <div class="recent-videos__header">
+        <div class="section-header">
+          <h2 class="section-header__heading">{{ section.settings.heading }}</h2>
+
+          <div class="section-header__cta">
+            <a 
+              href="{{ social_networks.youtube.url }}" 
+              target="_blank"
+              class="button button--outline button--small"
+            >
+              Visit channel
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <div class="recent-videos__grid">
+        <div class="grid grid--waffle">
+          {% for video in social_networks.youtube.videos limit: section.settings.number_of_videos %}
+            <div class="grid__column grid__column--12 grid__column--4@md">
+              <div class="video-tile">
+                <a 
+                  href="{{ video.url }}" 
+                  target="_blank"
+                  class="video-tile__link"
+                >
+                  <div class="video-tile__image-container">
+                    <div class="video-tile__image">
+                      <div class="image image--video-thumbnail">
+                        <div class="image__object">
+                          <img 
+                            src="{{ video.thumbnail_url }}"
+                            alt="{{ video.title }}"
+                            class="image__image" 
+                          />
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="video-tile__icon">
+                      <img 
+                        src="{{ 'yt_icon.png' | asset_url }}" 
+                        alt="Watch video"
+                        class="video-tile__icon-image"
+                      />
+                    </div>
+                  </div>
+
+                  {% if section.settings.show_video_title == true %}
+                  <div class="video-tile__caption">
+                    <h3 class="video-tile__title">
+                      {{ video.title }}
+                    </h3>
+                  </div>
+                  {% endif %}
+                </a>
+              </div>
+            </div>
+          {% endfor %}
+        </div>
+      </div>
+    {% else %}
+      {% if request.design_mode %}
+        Please add your YouTube channel in the "Social links" tab of the design settings.
+      {% endif %}
+    {% endif %}
+  </div>
+</section>
+
+{% schema %}
+  {
+    "name": "YouTube feed",
+    "features": ["app:youtube"],
+    "class": "test",
+    "group": "Social feeds",
+    "position": 0,
+    "description": "Embed your latest YouTube videos.",
+    "settings": [
+      {
+        "type": "text",
+        "id": "heading",
+        "label": "Heading",
+        "default": "Recent videos"
+      },
+      {
+        "type": "checkbox",
+        "id": "show_video_title",
+        "label": "Show video title",
+        "default": true
+      },
+      {
+        "type": "select",
+        "id": "number_of_videos",
+        "label": "Number of videos",
+        "options": [
+          {
+            "value": "3",
+            "label": "3"
+          },
+          {
+            "value": "6",
+            "label": "6"
+          },
+          {
+            "value": "9",
+            "label": "9"
+          },
+          {
+            "value": "12",
+            "label": "12"
+          }
+        ],
+        "default": "3"
+      }
+    ],
+    "presets": [
+      {
+        "category": "Video",
+        "name": "YouTube feed"
+      }
+    ]
+  }
+{% endschema %}

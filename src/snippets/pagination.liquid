@@ -1,0 +1,35 @@
+{% if paginate.parts.size > 1 %}
+  <div class="pagination">
+    <nav class="pagination__nav">
+      <ul class="pagination__list">
+        <li class="pagination__list-item">
+          <a class="pagination__item pagination__item--prev{% unless paginate.previous %} disable{% endunless %}"
+          {% if paginate.previous %}href="{{ paginate.previous.url }}"{% endif %}>
+            {% include 'icon-chevron-left' %}
+          </a>
+        </li>
+
+        {% for part in paginate.parts %}
+          <li class="pagination__list-item">
+            {% if part.is_link %}
+              <a class="pagination__item" href="{{ part.url }}">{{ part.title }}</a>
+            {% else %}
+              {% if part.title == paginate.current_page %}
+                <a class="pagination__item active">{{ part.title }}</a>
+              {% else %}
+                <span class="pagination__item">{{ part.title }}</span>
+              {% endif %}
+            {% endif %}
+          </li>
+        {% endfor %}
+
+        <li class="pagination__list-item">
+          <a class="pagination__item pagination__item--next{% unless paginate.next %} disable{% endunless %}"
+          {% if paginate.next %}href="{{ paginate.next.url }}"{% endif %}>
+            {% include 'icon-chevron-right' %}
+          </a>
+        </li>
+      </ul>
+    </nav>
+  </div>
+{% endif %}

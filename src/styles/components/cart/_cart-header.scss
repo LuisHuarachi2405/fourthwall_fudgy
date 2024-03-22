@@ -1,0 +1,11 @@
+.cart-header {
+  &__heading {
+    font-size: font-size-heading(24px);
+    line-height: $line-height-base;
+    text-align: center;
+
+    @include media-query(sm) {
+      text-align: left;
+    }
+  }
+}

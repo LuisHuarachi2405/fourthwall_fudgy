@@ -1,0 +1,103 @@
+<section data-section-id="{{ section.id }}" data-testid="main.single.section" class="recent-tiktok recent-tiktok--{{ section.id }}">
+  <div class="container wrapper">
+    {% if social_networks.tiktok %}
+      {% if section.settings.show_heading == true %}
+        <div class="recent-tiktok__header">
+          <div class="section-header">
+            <h3 class="section-header__heading">{{ section.settings.heading }}</h3>
+
+            <div class="section-header__cta">
+              <a href="{{ social_networks.tiktok.url }}" target="_blank" class="button button--outline button--small">
+                Visit Channel
+              </a>
+            </div>
+          </div>
+        </div>
+      {% endif %}
+
+      <div class="recent-tiktok__grid">
+        <div class="grid grid--center grid--waffle">
+          {% for video in social_networks.tiktok.videos limit:section.settings.number_of_tiktoks %}
+            <div class="grid__column grid__column--6 grid__column--3@md">
+              <div class="video-tile">
+                <a href="{{ video.url }}" target="_blank" class="video-tile__link">
+                  <div class="video-tile__image-container">
+                    <div class="video-tile__image video-tile__image--no-opacity">
+                      <div class="image image--video-thumbnail image--video-thumbnail-large">
+                        <div class="image__object">
+                          <img src="{{ video.thumbnail_url }}" alt="{{ video.title }}" class="image__image"/>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="video-tile__icon video-tile__icon--visible">
+                      <img src="{{ 'tk_icon.png' | asset_url }}" alt="Watch TikTok" class="video-tile__icon-image"/>
+                    </div>
+                  </div>
+                </a>
+              </div>
+            </div>
+          {% endfor %}
+        </div>
+      </div>
+    {% else %}
+      {% if request.design_mode %}
+        Please connect your store with TikTok integration.
+      {% endif %}
+    {% endif %}
+  </div>
+</section>
+
+{% schema %}
+  {
+    "name": "TikTok feed",
+    "features": ["app:tiktok"],
+    "group": "Social feeds",
+    "position": 1,
+    "description": "Embed your latest TikTok posts.",
+    "settings": [
+      {
+        "type": "checkbox",
+        "id": "show_heading",
+        "label": "Show heading",
+        "default": true
+      },
+      {
+        "type": "text",
+        "id": "heading",
+        "label": "Heading",
+        "default": "Follow on TikTok"
+      },
+      {
+        "type": "select",
+        "id": "number_of_tiktoks",
+        "label": "Number of videos",
+        "options": [
+          {
+            "value": "4",
+            "label": "4"
+          },
+          {
+            "value": "8",
+            "label": "8"
+          },
+          {
+            "value": "12",
+            "label": "12"
+          },
+          {
+            "value": "16",
+            "label": "16"
+          }
+        ],
+        "default": "4"
+      }
+    ],
+    "presets": [
+      {
+        "category": "Video",
+        "name": "TikTok feed"
+      }
+    ]
+  }
+{% endschema %}

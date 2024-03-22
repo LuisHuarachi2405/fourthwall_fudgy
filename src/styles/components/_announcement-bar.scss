@@ -1,0 +1,25 @@
+.announcement-bar {
+  padding: 10px 0;
+
+  background-color: get-color(primary);
+
+  text-align: center;
+
+  color: get-color(on-primary);
+  font-size: font-size(12px);
+  font-weight: $font-weight-base-bold;
+
+  &__section {
+    &--left {
+      @include media-query(sm) {
+        text-align: left;
+      }
+    }
+
+    &--right {
+      @include media-query(sm) {
+        text-align: right;
+      }
+    }
+  }
+}

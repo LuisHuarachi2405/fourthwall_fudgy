@@ -1,0 +1,190 @@
+<aside data-drawer="product" class="drawer">
+  <div data-drawer-trigger-primary="product" class="drawer__background"></div>
+  <div class="drawer__content">
+    <div class="drawer__content-inner">
+      <div class="product-drawer">
+        <div class="product-drawer__section">
+          <div class="product-drawer__header">
+            <div class="product-drawer__header-item product-drawer__header-item--tick">
+              {% include 'icon-accept' %}
+            </div>
+
+            <div class="product-drawer__header-item product-drawer__header-item--heading">
+              <h4 class="product-drawer__heading">Added to cart</h4>
+            </div>
+
+            <div class="product-drawer__header-item product-drawer__header-item--close">
+              <a data-drawer-trigger-primary="product" data-testid="product.close.dialog" href="#" class="product-drawer__close">
+                {% include 'icon-close' %}
+              </a>
+            </div>
+          </div>
+        </div>
+        
+        <div class="product-drawer__section">
+          <div class="product-drawer__item-info">
+            <div class="inline-image">
+              <div class="inline-image__image">
+                <div class="image image--background-color">
+                  <div data-product-info="image-container" class="image__object"></div>
+                </div>
+              </div>
+
+              <div class="inline-image__content">
+                <div data-product-info="title" class="inline-image__heading">
+                  {{ product.title }}
+                </div>
+                <p data-product-info="price" class="inline-image__price"></p>
+                <p class="inline-image__quantity">
+                  Quantity:
+                  <span data-product-info="quantity"></span>
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="product-drawer__section">
+          <div class="product-drawer__subtotal">
+            <div class="product-drawer__subtotal-item">
+              <span class="product-drawer__subtotal-label">Cart subtotal (<span data-product-info="cart-quantity"></span>):</span>
+            </div>
+
+            <div class="product-drawer__subtotal-item product-drawer__subtotal-item--value">
+              <span data-product-info="cart-price" class="product-drawer__subtotal-value"></span>
+            </div>
+          </div>
+        </div>
+
+        <div class="product-drawer__section">
+          <div class="product-drawer__cta">
+            <div class="product-drawer__cta-item product-drawer__cta-item--view-cart">
+              <a 
+                href="{{ routes.cart_url | localized_url }}" 
+                class="button button--outline button--expand"
+              >
+                View Cart
+              </a>
+            </div>
+
+            <div class="product-drawer__cta-item product-drawer__cta-item--checkout">
+              <form
+                action="{{ routes.cart_url | localized_url }}"
+                method="post"
+                novalidate
+                class="product-drawer__checkout-form"
+              >
+                <button
+                  type="submit"
+                  name="checkout"
+                  class="button button--primary button--expand"
+                >
+                  Checkout
+                </button>
+              </form>
+            </div>
+          </div>
+        </div>
+
+        {%- assign number_of_recommended_products = 4 -%}
+        {%- assign recommended_products = product.id | fetch_recommended_products: number_of_recommended_products -%}
+
+        {% capture product_recommendations %}
+          <div class="product-drawer__section">
+            <div class="product-drawer__recommended">
+              <h4 class="product-drawer__recommended-heading">
+                You may also like
+              </h4>
+
+              <ul class="product-drawer__recommended-items">
+                {% for recommended_product in recommended_products %}
+                  <li class="product-drawer__recommended-item">
+                    <div class="inline-image">
+                      <a href="{{ recommended_product.url | localized_url }}" class="inline-image__image">
+                        <div class="image image--background-color">
+                          <div class="image__object">
+                            {% if recommended_product.featured_image %}
+                              <img
+                                src="{{ recommended_product.featured_image.src | img_url: '120x' }}" 
+                                alt="{{ recommended_product.featured_image.alt }}"
+                              >
+                            {% endif %}
+                          </div>
+                        </div>
+                      </a>
+                      <div class="inline-image__content">
+                        <a href="{{ recommended_product.url | localized_url }}" class="inline-image__link">
+                          <h5 class="inline-image__heading">
+                            {{ recommended_product.title }}
+                          </h5>
+                        </a>
+
+                        <p class="inline-image__prices">
+                          {% if recommended_product.selected_or_first_available_variant.compare_at_price %}
+                            <span>
+                              <s class="inline-image__price inline-image__price--offer">
+                                {{ recommended_product.selected_or_first_available_variant.compare_at_price | money }}
+                              </s>
+                            </span>
+                          {% endif %}
+
+                          <span class="inline-image__price inline-image__price--original">
+                            {{ recommended_product.selected_or_first_available_variant.price | money }}
+                          </span>
+                        </p>
+
+                        <div class="inline-image__cta">
+                          {% if recommended_product.has_only_default_variant %}
+                            <button 
+                              data-product="recommended-add"
+                              data-recommended-quantity="1"
+                              data-recommended-variant="{{ recommended_product.selected_or_first_available_variant.id }}" 
+                              class="button button--xsmall button--primary"
+                            >
+                              Add to Cart
+                              <span class="button__spinner">
+                                <div class="spinner spinner--xsmall"></div>
+                              </span>
+                            </button>
+
+                            <p 
+                              data-product="recommended-success"
+                              data-recommended-variant="{{ recommended_product.selected_or_first_available_variant.id }}"
+                              class="inline-image__cta-response inline-image__cta-response--success"
+                            >
+                              <span class="inline-image__cta-response-icon">
+                                {% include 'icon-accept-small' %}
+                              </span>
+                              Added to cart
+                            </p>
+
+                            <p
+                              data-product="recommended-error"
+                              data-recommended-variant="{{ recommended_product.selected_or_first_available_variant.id }}"
+                              class="inline-image__cta-response inline-image__cta-response--error"
+                            ></p>
+                          {% else %}
+                            <a 
+                              href="{{ recommended_product.url | localized_url }}"
+                              class="button button--xsmall button--primary"
+                            >
+                              View Product
+                            </a>
+                          {% endif %}
+                        </div>
+                      </div>
+                    </div>
+                  </li>
+                {% endfor %}
+              </ul>
+            </div>
+          </div>
+        {% endcapture %}
+
+        {% if recommended_products != blank %}
+          {{ product_recommendations }}
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</aside>

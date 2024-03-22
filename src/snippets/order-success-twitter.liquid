@@ -1,0 +1,30 @@
+{%- assign creator = shop.name %}
+{%- assign share_url = shop.url -%}
+
+{%- assign twitter = shop.social_networks | where: "name", "twitter" | first -%}
+{% if twitter.handle != blank %}
+  {%- assign creator = twitter.handle | prepend: '@' %}
+{% endif %}
+
+{% if order.line_items.size > 0 %}
+  {%- assign share_url = shop.url | append: order.line_items[0].url -%}
+
+  {%- capture twitter_share_text -%}
+  I just got a {{ order.line_items[0].product_title }} to support {{ creator }}!
+  {%- endcapture -%}
+
+{% elsif order.donation %}
+  {%- capture twitter_share_text -%}
+  I just supported {{ creator }} with a {{ order.donation | money }} donation!
+  {%- endcapture -%}
+{% endif %}
+
+{%- capture twitter_url -%}
+https://twitter.com/intent/tweet?text={{ twitter_share_text }}&url={{ share_url }}
+{%- endcapture -%}
+<a href="{{ twitter_url }}" target="_blank" class="share-button share-button--twitter" onclick="window.open(this.href,'targetWindow','toolbar=no,width=600,height=400')">
+  <span class="share-button__icon">
+    {% render 'icon-twitter' %}
+  </span>
+  Share on Twitter
+</a>

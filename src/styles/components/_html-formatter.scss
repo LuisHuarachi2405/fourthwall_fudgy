@@ -1,0 +1,53 @@
+// Style user output html
+.html-formatter {
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+
+  & > * + * {
+    margin-top: 8px;
+  }
+
+  &--page {
+    & > * + * {
+      margin-top: 16px;
+    }
+  }
+
+  ol,
+  ul {
+    padding-left: 1.1em;
+
+    li {
+      & + li {
+        margin-top: 4px;
+      }
+    }
+  }
+
+  ul {
+    list-style: disc outside none;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    &:not(:first-child) {
+      margin-top: 28px;
+
+      @include media-query(sm) {
+        margin-top: 38px;
+      }
+    }
+  }
+
+  &--center {
+    ul,
+    ol {
+      padding-left: 1.1em;
+      list-style-position: initial;
+    }
+  }
+}

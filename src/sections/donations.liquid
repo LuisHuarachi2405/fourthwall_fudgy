@@ -1,0 +1,98 @@
+{% assign donation_amount1  = section.settings.donation_amount1 %}
+{% assign donation_amount2  = section.settings.donation_amount2 %}
+{% assign donation_amount3  = section.settings.donation_amount3 %}
+{% assign donation_cta_text = section.settings.donation_cta_text %}
+
+<section data-section-id="{{ section.id }}" data-testid="main.single.section" class="donations donations--{{ section.id }}">
+  <div class="donations__inner">
+    <div class="container wrapper">
+      <div class="grid grid--middle grid--justify">
+        <div class="grid__column grid__column--12 grid__column--6@md">
+          <div class="donations__info">
+            <div class="donations__header">
+              <h2 class="donations__heading">{{ section.settings.heading }}</h2>
+            </div>
+
+            <div class="donations__text">
+              <p>{{ section.settings.text }}</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="grid__column grid__column--12 grid__column--6@md">
+          <div class="donations__form-container">
+            
+            {% assign donation_amounts = '' %}
+
+            {% for i in (1..3) %}
+              {% assign donation_amount = "donation_amount" | append: i %}
+              {% assign donation_amount = section.settings[donation_amount] %}
+              {% if forloop.index > 1 %}
+                {% assign donation_amounts = donation_amounts | append: ',' | append: donation_amount %}
+              {% else %}
+                {% assign donation_amounts = donation_amounts | append: donation_amount %}
+              {% endif %}
+            {% endfor %}
+
+            {% assign donation_amounts = donation_amounts | split: ',' %}
+
+            {% include 'donation-form', donation_amounts: donation_amounts, donation_cta_text: donation_cta_text %}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+  {
+    "name": "Donations",
+    "group": "Others",
+    "position": 0,
+    "description": "Ask your fans for donations.",
+    "settings": [
+      {
+        "type": "text",
+        "id": "heading",
+        "label": "Heading",
+        "default": "Make a donation"
+      },
+      {
+        "type": "textarea",
+        "id": "text",
+        "label": "Text",
+        "default": "Your support helps me make more quality content! Thank you!"
+      },
+      {
+        "type": "text",
+        "id": "donation_amount1",
+        "label": "First donation amount",
+        "default": "5"
+      },
+      {
+        "type": "text",
+        "id": "donation_amount2",
+        "label": "Second donation amount",
+        "default": "10"
+      },
+      {
+        "type": "text",
+        "id": "donation_amount3",
+        "label": "Third donation amount",
+        "default": "20"
+      },
+      {
+        "type": "text",
+        "id": "donation_cta_text",
+        "label": "Custom donation text",
+        "default": "Donate & Send Message"
+      }
+    ],
+    "presets": [
+      {
+        "category": "Donations",
+        "name": "Donations"
+      }
+    ]
+  }
+{% endschema %}

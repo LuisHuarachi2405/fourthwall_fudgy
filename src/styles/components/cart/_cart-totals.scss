@@ -1,0 +1,22 @@
+.cart-totals {
+  color: get-color(heading);
+  font-size: font-size(14px);
+  font-weight: $font-weight-base-bold;
+
+  &__item {
+    display: flex;
+    align-items: center;
+
+    & > * {
+      flex: 1 1 auto;
+    }
+
+    & + & {
+      margin-top: 8px;
+    }
+  }
+
+  &__amount {
+    text-align: right;
+  }
+}

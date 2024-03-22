@@ -1,0 +1,37 @@
+{%- assign grid_class = '' -%}
+{%- assign grid_column_size_md = '3' -%}
+
+{% case settings.product_card_size %}
+  {% when 'large' %}
+    {%- assign grid_column_size_md = '4' -%}
+  {% when 'extra-large' %}
+    {%- assign grid_column_size_md = '6' -%}
+    {%- assign grid_class = grid_class | append: ' grid--large' -%}
+{% endcase %}
+
+<section data-section-id="{{ section.id }}" data-testid="main.single.section" class="collection-template">
+  <div class="container wrapper">
+    <div class="collection-template__header">
+      <h1 class="collection-template__heading">{{ collection.title }}</h1>
+    </div>
+
+    <div class="collection-template__grid">
+      {% paginate collection.products by 48 %}
+        <div class="grid grid--waffle{{ grid_class }}{% if settings.center_products == true or settings.center_products == 'true' %} grid--center{% endif %}">
+          {% for product in collection.products %}
+            <div class="grid__column grid__column--6 grid__column--{{ grid_column_size_md }}@md">
+              {% include 'product-tile' with product %}
+            </div>
+          {% endfor %}
+        </div>
+        {% include 'pagination', paginate: paginate %}
+      {% endpaginate %}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+  {
+    "name": "Collection"
+  }
+{% endschema %}

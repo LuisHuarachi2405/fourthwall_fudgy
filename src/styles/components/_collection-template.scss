@@ -1,0 +1,17 @@
+.collection-template {
+  &__heading {
+    font-size: font-size-heading(36px);
+
+    @include media-query(sm) {
+      font-size: font-size-heading(43px);
+    }
+  }
+
+  &__grid {
+    margin-top: 24px;
+
+    @include media-query(md) {
+      margin-top: 48px;
+    }
+  }
+}

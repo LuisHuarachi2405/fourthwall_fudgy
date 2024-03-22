@@ -1,0 +1,214 @@
+<div class="post-tile {{ post_state }}" data-post-type="{{ post_type }}" data-post-tile-height>
+  <a class="post-tile__link" href="{{ post_link }}"></a>
+  <div class="post-tile__container" data-post-tile-container-height>
+    <div class="post-tile__image-container">
+      {% if images %}
+        <div class="post-tile__image">
+          <div class="image image--video-thumbnail">
+            <div class="image__object">
+              {% if post_state == "locked" or post_state == "unavailable" %}
+                <img src="{{ unavailable_image }}" alt="{{ title }}">
+              {% else %}
+                <div class="post-tile__images post-tile__images--{{ images.size }}">
+                  {% for image in images %}
+                    {% if forloop.index < 5 %}
+                      <img
+                        class="post-tile__images--{{ post_type | downcase }} post-tile__images--{{ post_type | downcase }}-{{ forloop.index }}"
+                        src="{{ image.url }}"
+                        alt="{{ title }}" />
+                    {% endif %}
+
+                    {% if forloop.index == 5 %}
+                      <div class="post-tile__images--overlay">+4</div>
+                      {% break %}
+                    {% endif %}
+                  {% endfor %}
+                </div>
+              {% endif %}
+            </div>
+          </div>
+        </div>
+      {% elsif image %}
+        <div class="post-tile__image">
+          <div class="image image--video-thumbnail">
+            <div class="image__object">
+              {% if post_state == "locked" or post_state == "unavailable" %}
+                <img src="{{ unavailable_image }}" alt="{{ title }}">
+              {% else %}
+                {% if image != blank %}
+                  <img
+                    class="post-tile__image--{{ post_type | downcase }}-image"
+                    src="{{ image }}"
+                    alt="{{ title }}" />
+                {% endif %}
+
+                {% if post_type == "Video" or post_type == "Audio" %}
+                  {% if post_type == "Audio" %}
+                    <img
+                      class="post-tile__image--{{ post_type | downcase }}-background"
+                      src="{{ unavailable_image }}"
+                      alt="{{ title }}" />
+                  {% endif %}
+
+                  <div class="post-tile__image--{{ post_type | downcase }}-play">
+                    {% include 'icon-play' %}
+                  </div>
+                {% endif %}
+              {% endif %}
+            </div>
+          </div>
+        </div>
+      {% else %}
+        {% if post_state == "locked" or post_state == "unavailable" %}
+          <div class="post-tile__image">
+            <div class="image image--video-thumbnail">
+              <div class="image__object"></div>
+            </div>
+          </div>
+        {% endif %}
+      {% endif %}
+
+      <div class="post-tile__locked">
+        <div class="button button--primary button--large">
+          {% include 'icon-lock' %}
+
+          {% if post_state == "locked" %}
+            Join to Access
+          {% else %}
+            Upgrade
+          {% endif %}
+        </div>
+      </div>
+    </div>
+
+    <div class="post-tile__content">
+      <div class="post-tile__header">
+        {% assign post_date = publish_date | date: "%b %-d, %Y" %}
+        {% assign current_date = "now" | date: "%s" %}
+        {% assign new_publish_date = publish_date | date: "%s" %}
+        {% assign seconds = current_date | minus: new_publish_date | abs %}
+        {% assign days = seconds | divided_by: 86400 %}
+        {% assign hours = seconds | divided_by: 3600 | modulo: 24 %}
+        {% assign minutes = seconds | modulo: 3600 | divided_by: 60 %}
+
+        {% unless days > 0 %}
+          {% if hours > 0 %}
+            {% assign post_date = hours | append: 'h ago' %}
+          {% else %}
+            {% if minutes > 0 %}
+              {% assign post_date = minutes | append: 'm ago' %}
+            {% else %}
+              {% assign post_date = 'Just now' %}
+            {% endif %}
+          {% endif %}
+        {% endunless %}
+
+        <div class="post-tile__date">{{ post_date }}</div>
+
+        <h4 class="post-tile__title-post">
+          {{ title }}
+        </h4>
+      </div>
+
+      {% unless post_state == "locked" or post_state == "unavailable" %}
+        {% if options %}
+          <div class="post-tile__options" data-poll-status="{{ status }}">
+            {% assign total_votes = 0 %}
+            {% for option in options %}
+              {% assign votes_percentage = option.votes_percentage | remove: ".0" %}
+              {% assign total_votes = total_votes | plus: option.votes_amount %}
+
+              <div class="post-tile__option">
+                <span class="post-tile__option-title">{{ option.title }}</span>
+                <span class="post-tile__option-votes" data-votes-percentage="{{ votes_percentage }}">{{ votes_percentage }}%</span>
+                <span class="post-tile__option-bar"></span>
+              </div>
+            {% endfor %}
+
+            <div class="post-tile__total-votes">
+              <span>{{ total_votes }} votes</span>
+              <span>Final results</span>
+            </div>
+
+            {% assign current_date = "now" | date: "%s" %}
+            {% assign new_finished_at = finished_at | date: "%s" %}
+            {% assign seconds = current_date | minus: new_finished_at | abs %}
+            {% assign days = seconds | divided_by: 86400 %}
+            {% assign hours = seconds | divided_by: 3600 | modulo: 24 %}
+            {% assign minutes = seconds | divided_by: 60 | modulo: 60 %}
+            {% assign hours_text = " hours left" %}
+            {% assign minutes_text = " minutes left" %}
+
+            {% if hours == 1 %}
+              {% assign hours_text = " hour left" %}
+            {% endif %}
+
+            {% if minutes == 1 %}
+              {% assign minutes_text = " minute left" %}
+            {% endif %}
+
+            {% if days > 0 %}
+              {% assign poll_time_left = days | append: 'd ' | append: hours | append: hours_text %}
+            {% elsif hours > 0 %}
+              {% assign poll_time_left = hours | append: hours_text %}
+            {% else %}
+              {% assign poll_time_left = minutes | append: minutes_text %}
+            {% endif %}
+
+            <div class="post-tile__time">
+              {{ poll_time_left }}
+            </div>
+          </div>
+        {% endif %}
+      {% endunless %}
+
+      {% unless post_state == "locked" or post_state == "unavailable" %}
+        <div class="post-tile__text">
+          <div class="html-formatter">
+            {{ description }}
+          </div>
+
+          <div class="post-tile__text--overlay hidden" data-post-tile-text-overlay>
+            <p>...Continue reading</p>
+
+            <div class="post-tile__feedback">
+              <div class="post-tile__feedback-container">
+                <div class="post-tile__item">
+                  <span class="post-tile__icon post-tile__icon--like">
+                    {% include 'icon-heart' %}
+                  </span>
+                  <span class="post-tile__count">{{ likes_count }}</span>
+                </div>
+
+                <div class="post-tile__item">
+                  <span class="post-tile__icon post-tile__icon--comment">
+                    {% include 'icon-comment' %}
+                  </span>
+                  <span class="post-tile__count">{{ comments_count }}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="post-tile__feedback">
+            <div class="post-tile__feedback-container">
+              <div class="post-tile__item">
+                <span class="post-tile__icon post-tile__icon--like">
+                  {% include 'icon-heart' %}
+                </span>
+                <span class="post-tile__count">{{ likes_count }}</span>
+              </div>
+
+              <div class="post-tile__item">
+                <span class="post-tile__icon post-tile__icon--comment">
+                  {% include 'icon-comment' %}
+                </span>
+                <span class="post-tile__count">{{ comments_count }}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      {% endunless %}
+    </div>
+  </div>
+</div>

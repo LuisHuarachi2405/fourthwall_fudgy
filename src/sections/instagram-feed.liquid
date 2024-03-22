@@ -1,0 +1,164 @@
+{% assign grid_column_class = "" %}
+
+{% case section.settings.image_size %}
+  {% when "small" %}
+    {% assign grid_column_class = " instagram-feed__small-column" %}
+  {% when "regular" %}
+    {% assign grid_column_class = " grid__column--2@md" %}
+  {% when "large" %}
+    {% assign grid_column_class = " grid__column--3@md" %}
+{% endcase %}
+
+<section data-section-id="{{ section.id }}" data-testid="main.single.section" class="instagram-feed instagram-feed--{{ section.id }}">
+  <div class="container wrapper">
+    {% if social_networks.instagram %}
+      {% if section.settings.show_heading == true %}
+        <div class="instagram-feed__header">
+          <h2 class="instagram-feed__heading">
+            <a 
+              href="{{ social_networks.instagram.url }}" 
+              target="_blank"
+              class="instagram-feed__heading-link"
+            >
+              {{ section.settings.heading }}
+            </a>
+          </h2>
+        </div>
+      {% endif %}
+
+      <div class="instagram-feed__grid">
+        <div class="grid grid--waffle{% unless section.settings.add_spacing %} grid--gapless{% endunless %}">
+          {% unless social_networks.instagram.processing? %}
+            {% for image in social_networks.instagram.photos limit: section.settings.number_of_images %}
+              <div class="grid__column grid__column--4{{ grid_column_class }}">
+                <a 
+                  href="{{ image.url }}"
+                  target="_blank"
+                  class="instagram-feed__post"
+                >
+                  <img 
+                    src="{{ image.thumbnail_url }}" 
+                    alt="{{ image.title }}"
+                    class="instagram-feed__image"
+                  />
+                </a>
+              </div>
+            {% endfor %}
+          {% else %}
+            {% if request.design_mode %}
+              {{ social_networks.instagram.processing_text }}
+            {% endif %}  
+          {% endunless %}
+        </div>
+      </div>
+    {% else %}
+      {% if request.design_mode %}
+        Please add your Instagram profile in the "Social links" tab of the design settings.
+      {% endif %}
+    {% endif %}
+  </div>
+</section>
+
+{% schema %}
+  {
+    "name": "Instagram feed",
+    "features": ["app:instagram"],
+    "group": "Social feeds",
+    "position": 2,
+    "description": "Embed your latest Instagram posts.",
+    "settings": [
+      {
+        "type": "checkbox",
+        "id": "show_heading",
+        "label": "Show heading",
+        "default": true
+      },
+      {
+        "type": "text",
+        "id": "heading",
+        "label": "Heading",
+        "default": "Follow on Instagram"
+      },
+      {
+        "type": "select",
+        "id": "image_size",
+        "label": "Image size",
+        "options": [
+          {
+            "value": "small",
+            "label": "Small"
+          },
+          {
+            "value": "regular",
+            "label": "Regular"
+          },
+          {
+            "value": "large",
+            "label": "Large"
+          },
+          {
+            "value": "extra-large",
+            "label": "Extra large"
+          }
+        ],
+        "default": "regular"
+      },
+      {
+        "type": "select",
+        "id": "number_of_images",
+        "label": "Number of images",
+        "options": [
+          {
+            "value": "3",
+            "label": "3"
+          },
+          {
+            "value": "4",
+            "label": "4"
+          },
+          {
+            "value": "6",
+            "label": "6"
+          },
+          {
+            "value": "9",
+            "label": "9"
+          },
+          {
+            "value": "12",
+            "label": "12"
+          },
+          {
+            "value": "16",
+            "label": "16"
+          },
+          {
+            "value": "18",
+            "label": "18"
+          },
+          {
+            "value": "24",
+            "label": "24"
+          },
+          {
+            "value": "27",
+            "label": "27"
+          }
+        ],
+        "default": "6"
+      },
+      {
+        "type": "checkbox",
+        "id": "add_spacing",
+        "label": "Add spacing between images",
+        "default": false
+      }
+    ],
+    "presets": [
+      {
+        "category": "Socials",
+        "name": "Instagram feed"
+      }
+    ]
+  }
+{% endschema %}

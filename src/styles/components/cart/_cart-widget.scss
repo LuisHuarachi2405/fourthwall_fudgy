@@ -1,0 +1,29 @@
+.cart-widget {
+  $this: &;
+
+  position: relative;
+
+  &__items {
+    display: block;
+    position: absolute;
+    top: -10px;
+    left: 7px;
+
+    border-radius: $button-border-radius;
+    padding: 2px 3px 1.5px;
+    min-width: 21px;
+    background-color: get-color(primary);
+
+    text-align: center;
+    line-height: 1.2em;
+    color: get-color(button-primary-text);
+    font-size: font-size(12px);
+    font-weight: $font-weight-base-bold;
+  }
+
+  &.empty {
+    #{$this}__items {
+      display: none;
+    }
+  }
+}

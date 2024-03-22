@@ -1,0 +1,172 @@
+.gallery-thumbs {
+  position: relative;
+
+  @include media-query(md) {
+    position: absolute;
+    top: 0;
+    right: 8px;
+    bottom: 0;
+    left: 0;
+  }
+
+  &__main {
+    display: flex;
+
+    @include media-query(md) {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      right: 0;
+    }
+
+    padding-top: 8px;
+    padding-bottom: 8px;
+
+    @include media-query(md) {
+      flex-direction: column;
+      padding-top: 0;
+      padding-bottom: 0;
+      width: 100% !important;
+    }
+  }
+
+  &__item {
+    position: relative;
+
+    outline: none;
+
+    width: 96px;
+    cursor: pointer;
+
+    @include media-query(md) {
+      margin-bottom: 8px;
+      width: 100% !important;
+    }
+
+    &:first-child {
+      margin-left: 0;
+    }
+
+    &.active,
+    &.tns-nav-active {
+      &::after {
+        opacity: 1;
+      }
+    }
+  }
+
+  &__image {
+    display: flex;
+
+    position: absolute;
+    right: 0;
+    left: 0;
+
+    align-items: center;
+    justify-content: center;
+
+    overflow: hidden;
+
+    margin: auto;
+
+    height: 100%;
+
+    &-object {
+      max-height: 100%;
+    }
+  }
+
+  &__image-container {
+    position: relative;
+    height: 100%;
+
+    background: get-color(image-background);
+    border-radius: $img-border-radius;
+
+    &--background-color {
+      background: get-color(product-image-background);
+    }
+
+    &::before {
+      content: '';
+
+      position: absolute;
+      z-index: 1;
+      left: 0;
+      top: 0;
+
+      opacity: 0;
+
+      transition: opacity $transition-base;
+
+      box-shadow: inset 0 0 0 3px get-color(primary);
+
+      width: 100%;
+      height: 100%;
+
+      .tns-nav-active & {
+        opacity: 1;
+      }
+    }
+
+    &::after {
+      content: '';
+      display: block;
+      padding-bottom: $img-ratio-padding;
+    }
+  }
+
+  &__nav-item {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+
+    transition: background-color $transition-base;
+
+    appearance: none;
+    outline: none;
+
+    border: 0;
+    padding: 4px 0;
+
+    background-color: rgba(get-color(background-rgb), 0.6);
+    cursor: pointer;
+
+    color: get-color(text);
+
+    @include media-query(md) {
+      left: 0;
+      bottom: auto;
+      width: 100%;
+    }
+
+    &:hover {
+      background-color: rgba(get-color(background-rgb), 0.8);
+    }
+
+    svg {
+      width: 20px;
+      height: 14px;
+
+      @include media-query(md) {
+        transform: rotate(90deg);
+        margin: 0 auto;
+      }
+    }
+
+    &--next {
+      right: 0;
+
+      @include media-query(md) {
+        top: auto;
+        bottom: 0;
+      }
+    }
+
+    &[disabled] {
+      visibility: hidden;
+      opacity: 0;
+    }
+  }
+}

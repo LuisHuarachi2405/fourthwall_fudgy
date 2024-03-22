@@ -1,0 +1,40 @@
+<section data-section-id="{{ section.id }}" data-testid="main.single.section" class="custom-html custom-html--{{ section.id }}">
+  {% unless section.settings.fullwidth %}
+    <div class="container wrapper">
+  {% endunless %}
+
+  {{ section.settings.custom_html }}
+
+  {% unless section.settings.fullwidth %}
+    </div>
+  {% endunless %}
+</section>
+
+{% schema %}
+  {
+    "name": "Custom HTML",
+    "group": "Layout",
+    "position": 5,
+    "description": "Embed your own code.",
+    "settings": [
+      {
+        "type": "html",
+        "id": "custom_html",
+        "label": "Custom HTML",
+        "default": "<div><p>Your custom HTML code.</p></div>"
+      },
+      {
+        "type": "checkbox",
+        "id": "fullwidth",
+        "label": "Make this section full width",
+        "default": false
+      }
+    ],
+    "presets": [
+      {
+        "category": "Content",
+        "name": "Custom HTML"
+      }
+    ]
+  }
+{% endschema %}

@@ -1,0 +1,71 @@
+{% assign today_date = 'now' | date: '%s' %}
+{% assign start_date = product.metafields.drop.start_date | date: '%s' %}
+{% assign end_date = product.metafields.drop.end_date | date: '%s' %}
+
+{% assign startDateDiffSeconds = start_date | minus: today_date %}
+{% assign startDateDifference = startDateDiffSeconds %}
+
+{% if startDateDifference > 0 %}
+  {% assign preorder = "PRE" %}
+{% elsif product.metafields.drop != blank and product.metafields.drop.finished == true %}
+  {% assign preorder = "END" %}
+{% endif %}
+
+<div data-testid="product" class="product-tile">
+  <a href="{{ product.url | localized_url }}" class="tile">
+    <div class="tile__image">
+      <div class="image image--background-color">
+        <div class="image__badges">
+          {% if product.promotion_badges %}
+            {% for badge in product.promotion_badges %}
+              <div class="badge">
+                {{ badge.label }}
+              </div>
+            {% endfor %}
+          {% endif %}
+
+          {% unless product.available %}
+            <div class="badge">
+              {% if preorder == "PRE" and product.metafields.drop.start_date %}
+                Coming soon
+              {% elsif preorder == "END" and product.metafields.drop.end_date %}
+                Sold Out
+              {% else %}
+                Sold Out
+              {% endif %}
+            </div>
+          {% endunless %}
+        </div>
+
+        <div class="image__object">
+          {% if product.featured_image %}
+            <img
+              src="{{ product.featured_image.src | img_url: '720x' }}"
+              alt="{{ product.featured_image.alt }}"
+            >
+          {% endif %}
+        </div>
+      </div>
+    </div>
+
+    <div class="tile__description">
+      <h3 class="tile__heading">
+        {{ product.title }}
+      </h3>
+
+      <p class="tile__prices">
+        {% if product.selected_or_first_available_variant.compare_at_price %}
+          <span>
+            <s class="tile__price tile__price--offer">
+              {{ product.selected_or_first_available_variant.compare_at_price | money }}
+            </s>
+          </span>
+        {% endif %}
+
+        <span class="tile__price tile__price--original">
+          {{ product.selected_or_first_available_variant.price | money }}
+        </span>
+      </p>
+    </div>
+  </a>
+</div>

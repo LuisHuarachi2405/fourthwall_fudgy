@@ -1,0 +1,246 @@
+.tiers {
+  $this: &;
+  position: relative;
+
+  &__background {
+    position: absolute;
+    z-index: -1;
+
+    width: 100%;
+    height: 100%;
+
+    object-fit: cover;
+  }
+
+  &__container {
+    display: grid;
+
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    grid-column-gap: 32px;
+    row-gap: 32px;
+
+    &--two-columns {
+      align-items: stretch;
+
+      @include media-query(md) {
+        grid-template-columns: repeat(auto-fill, minmax(calc(50% - 16px), 368px));
+      }
+    }
+
+    &--one-column {
+      align-items: stretch;
+      justify-content: center;
+
+      @include media-query(sm) {
+        grid-template-columns: repeat(auto-fill, minmax(368px, 1fr));
+        margin: 0 auto;
+        max-width: 538px;
+      }
+    }
+  }
+
+  &__limited-offer-heading {
+    width: 80%;
+    margin: 0 auto;
+    text-transform: uppercase;
+    font-size: 14px;
+    font-weight: 700;
+    color: get-color(header-link);
+    margin-bottom: 16px;
+  }
+
+  &__tier {
+    display: flex;
+
+    position: relative;
+
+    flex-direction: column;
+
+    text-align: center;
+
+    border: 1px solid rgba(get-color(on-background-rgb), 0.2);
+    border-radius: $input-border-radius;
+    padding: 24px;
+  }
+
+  &__tier > * + * {
+    margin-bottom: 20px;
+  }
+
+  &__tier > * + *:last-child {
+    margin-bottom: 0;
+  }
+
+  &__tier-description {
+    text-align: left;
+  }
+
+  &__tier-image-container {
+    display: block;
+    margin: 0 auto;
+    margin-bottom: 20px;
+  }
+
+  &__tier-image {
+    border-radius: $input-border-radius;
+    margin: auto;
+    width: auto;
+    max-height: 80px;
+
+    @include media-query(sm) {
+      max-height: 128px;
+    }
+  }
+
+  &__tier-title {
+    margin-bottom: 4px;
+    font-size: font-size-heading(16px);
+  }
+
+  &__tier-members-count {
+    font-size: font-size(14px);
+    opacity: 0.6;
+    margin-bottom: 8px;
+    margin-top: -2px;
+  }
+
+  &__tier-price {
+    display: flex;
+
+    align-items: center;
+    gap: 6px;
+    justify-content: center;
+
+    margin-bottom: 16px;
+
+    font-size: font-size(20px);
+    font-weight: $font-weight-base-bold;
+  }
+
+  &__tier-regular-price {
+    color: get-color(text-pale);
+    font-size: font-size(16px);
+    font-weight: normal;
+    text-decoration: line-through;
+  }
+
+  &__tier-annual-link {
+    color: get-color(on-background);
+    text-decoration: underline;
+
+    &:hover {
+      color: rgba(get-color(on-background-rgb), .6);
+    }
+  }
+
+  &__tier-content {
+    text-align: left;
+  }
+
+  &__tier-features {
+    display: grid;
+    gap: 8px;
+    align-content: flex-start;
+    width: 100%;
+  }
+
+  &__tier-feature {
+    display: flex;
+    align-items: baseline;
+    align-self: flex-start;
+  }
+
+  &__tier-feature-icon {
+    flex-shrink: 0;
+    margin-right: 16px;
+
+    svg {
+      width: 12px;
+      height: 12px;
+    }
+  }
+
+  &__tier-discount-cta-button {
+    display: inline-block;
+    position: relative;
+    padding: 7px 15px;
+    border: 1px solid rgba(get-color(on-background-rgb), .4);;
+    border-radius: 100px;
+    font-weight: var(--font-weight-base-bold, 700);
+    color: get-color(on-background);
+    margin-top: -6px;
+    text-decoration: none;
+
+    &:hover {
+      border-color: get-color(on-background);
+      color: get-color(on-background);
+
+      @include media-query(sm) {
+        #{$this}__tier-discount-tooltip {
+          opacity: 1;
+          transition-duration: 300ms;
+          visibility: visible;
+        }
+      }
+    }
+  }
+
+  &__tier-discount-cta-icon {
+    display: inline-block;
+    vertical-align: middle;
+    margin: 0 3.5px;
+  }
+
+  &__tier-discount-tooltip {
+    position: absolute;
+    visibility: hidden;
+    opacity: 0;
+    background-color: var(--color-background, get-color(white));
+    bottom: 3.5em;
+    left: 50%;
+    width: 210px;
+    transform: translate(-50%, 0%);
+    z-index: 99999;
+    border-radius: 6px;
+  }
+
+  &__tier-discount-tooltip-wrapper {
+    background-color: rgba(var(--color-on-background-rgb, 0, 0, 0), calc(0.1 - 0.06 * var(--color-background-brightness, 255) / 255));
+    color: rgba(get-color(on-background-rgb), .6);
+    border: 1px solid rgba(get-color(on-background-rgb), .1);
+    font-size: 14px;
+    padding: 10px 11px;
+    border-radius: 6px;
+    text-align: left;
+    font-weight: 400;
+    line-height: 19px;
+  }
+
+  &__tier-cta {
+    margin-bottom: 16px;
+  }
+
+  &__twitch-gift {
+    position: relative;
+
+    .button {
+      margin-top: -4px;
+    }
+  }
+
+  &__twitch-gift-badge {
+    position: absolute;
+    left: 16px;
+    top: 10px;
+    color: get-color(on-background);
+  }
+
+  &__twitch-gift-badge-icon {
+    color: get-color(text);
+
+    &:hover {
+      color: get-color(text);
+    }
+  }
+}
+  

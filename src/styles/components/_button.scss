@@ -1,0 +1,146 @@
+.button {
+  $this: &;
+
+  display: inline-block;
+
+  transition: opacity $transition-base, border-color $transition-base,
+    background-color $transition-base, color $transition-base;
+
+  border: 2px solid transparent;
+  border-radius: $button-border-radius;
+  padding: 14px 22px;
+
+  cursor: pointer;
+
+  font-size: font-size(16px);
+  line-height: $line-height-base;
+  font-weight: $font-weight-base-bold;
+  font-style: $font-style-base;
+  text-transform: $text-transform-base;
+  text-align: center;
+  text-decoration: none;
+
+  &:active,
+  &:focus {
+    outline: 0;
+  }
+
+  &__label {
+    display: inline-block;
+    vertical-align: middle;
+  }
+
+  &__icon {
+    display: inline-block;
+    margin-right: 8px;
+    max-width: 20px;
+    vertical-align: middle;
+  }
+
+  &__spinner {
+    display: none;
+    position: relative;
+    top: 0;
+
+    margin-left: 11px;
+
+    vertical-align: middle;
+  }
+
+  &.loading {
+    #{$this}__spinner {
+      display: inline-block;
+    }
+  }
+
+  &--primary {
+    background-color: get-color(button-primary);
+    color: get-color(button-primary-text);
+
+    &:hover {
+      opacity: 0.8;
+      color: get-color(button-primary-text);
+    }
+  }
+
+  &--secondary {
+    background-color: rgba(get-color(on-background-rgb), .12);
+    transition: opacity 0.2s;
+
+    &:hover {
+      opacity: 0.8;
+    }
+  }
+
+  &--outline {
+    border-color: get-color(button-outline);
+    color: get-color(button-outline-text);
+
+    &:hover {
+      opacity: .6;
+      color: get-color(button-outline-text);
+    }
+  }
+
+  &:disabled {
+    opacity: 1 !important;
+    background-color: get-color(button-disabled) !important;
+    cursor: not-allowed;
+    color: get-color(button-disabled-text) !important;
+  }
+
+  &--transparent {
+    background: transparent;
+  }
+
+  // Sizes
+  &--xsmall {
+    padding: 8px 16px;
+    font-size: font-size(14px);
+
+    #{$this}__icon {
+      margin-right: 0.2em;
+    }
+  }
+
+  &--small {
+    padding: 10px 18px;
+
+    #{$this}__icon {
+      margin-right: 0.3em;
+    }
+  }
+
+  &--medium {
+    padding: 16px 22px;
+  }
+
+  &--large {
+    padding: 16px 24px;
+
+    @include media-query(sm) {
+      padding: 18px 48px;
+    }
+  }
+
+  &--wide {
+    padding-right: 70px;
+    padding-left: 70px;
+  }
+
+  &--input {
+    padding: 15px 24px;
+    font-size: font-size(14px);
+    line-height: 1;
+  }
+
+  &--expand {
+    display: block;
+    width: 100%;
+  }
+
+  &--hidden {
+    visibility: hidden;
+    opacity: 0;
+  }
+}

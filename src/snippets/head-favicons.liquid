@@ -1,0 +1,10 @@
+<link rel="shortcut icon" href="{{ settings.favicon | img_url: '96x96' }}" sizes="96x96" type="image/png" />
+<link rel="shortcut icon" href="{{ settings.favicon | img_url: '48x48' }}" sizes="48x48" type="image/png" />
+
+{% if settings.favicon != blank %}
+  <link rel="apple-touch-icon" href="{{ settings.favicon | img_url: '180x180' }}" sizes="180x180" type="image/png" />
+{% else %}
+  <link rel="apple-touch-icon" href="{{ 'apple-touch-icon.png' | asset_url }}" sizes="180x180" />
+{% endif %}
+
+<meta content="#ffffff" name="msapplication-TileColor" />

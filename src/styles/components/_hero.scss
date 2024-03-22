@@ -1,0 +1,244 @@
+.hero {
+  $this: &;
+
+  position: relative;
+  overflow: hidden;
+
+  &--move-top {
+    margin-top: -$header-height;
+
+    @include media-query(sm) {
+      margin-top: -$header-height-sm;
+    }
+  }
+
+  &__container {
+    position: relative;
+  }
+
+  &__content {
+    position: relative;
+    z-index: 1;
+
+    text-align: center;
+
+    max-width: ($container-width / 12) * 8;
+
+    & > * + * {
+      margin-top: 24px;
+    }
+
+    &--left {
+      @include media-query(sm) {
+        text-align: left;
+        margin-left: 0;
+        margin-right: auto;
+      }
+    }
+
+    &--center {
+      @include media-query(sm) {
+        text-align: center;
+        margin-left: auto;
+        margin-right: auto;
+      }
+    }
+
+    &--right {
+      @include media-query(sm) {
+        text-align: right;
+        margin-left: auto;
+        margin-right: 0;
+      }
+    }
+
+    &--small {
+      padding-top: 40px;
+      padding-bottom: 40px;
+
+      @include media-query(sm) {
+        padding-top: 120px;
+        padding-bottom: 120px;
+      }
+    }
+
+    &--regular {
+      padding-top: 60px;
+      padding-bottom: 60px;
+
+      @include media-query(sm) {
+        padding-top: 180px;
+        padding-bottom: 180px;
+      }
+    }
+
+    &--large {
+      padding-top: 100px;
+      padding-bottom: 100px;
+
+      @include media-query(sm) {
+        padding-top: 250px;
+        padding-bottom: 250px;
+      }
+    }
+  }
+
+  &__heading {
+    line-height: 1.2;
+
+    &:first-child {
+      margin-top: 0;
+    }
+
+    &--small {
+      font-size: font-size-heading(24px);
+
+      @include media-query(sm) {
+        font-size: font-size-heading(48px);
+      }
+    }
+
+    &--regular {
+      font-size: font-size-heading(40px);
+
+      @include media-query(sm) {
+        font-size: font-size-heading(64px);
+      }
+    }
+
+    &--large {
+      font-size: font-size-heading(48px);
+
+      @include media-query(sm) {
+        font-size: font-size-heading(92px);
+      }
+    }
+  }
+
+  &__text {
+    margin-top: 16px;
+    color: get-color(on-background);
+  }
+
+  &__cta-container {
+    display: flex;
+
+    flex-wrap: wrap;
+    justify-content: center;
+
+    margin-top: 24px;
+    margin-right: -8px;
+    margin-left: -8px;
+
+    @include media-query(sm) {
+      margin-top: 32px;
+    }
+
+    &--left {
+      @include media-query(sm) {
+        justify-content: flex-start;
+      }
+    }
+
+    &--right {
+      @include media-query(sm) {
+        justify-content: flex-end;
+      }
+    }
+  }
+
+  &__cta {
+    flex-basis: 100%;
+    padding-right: 8px;
+    padding-left: 8px;
+
+    @include media-query(sm) {
+      flex-basis: auto;
+    }
+
+    &--secondary {
+      margin-top: 16px;
+
+      @include media-query(sm) {
+        margin-top: 0;
+      }
+    }
+  }
+
+  &__socials {
+    display: flex;
+
+    position: relative;
+    z-index: 1;
+
+    justify-content: center;
+    flex-wrap: wrap;
+    
+    margin-top: -60px;
+    padding-bottom: 20px;
+  }
+
+  &__social-item {
+    display: flex;
+  }
+
+  &__social-link {
+    display: inline-block;
+    position: relative;
+    padding: 12px;
+    transition: opacity $transition-base;
+    opacity: .6;
+    color: inherit;
+
+    &:hover {
+      opacity: 1;
+      color: inherit;
+    }
+
+    svg {
+      width: 14px;
+      height: 14px;
+
+      @include media-query(sm) {
+        width: 16px;
+        height: 16px;
+      }
+    }
+  }
+
+  &__social-badge {
+    display: flex;
+
+    position: absolute;
+    top: -10px;
+    right: 0;
+    left: 0;
+
+    justify-content: center;
+    align-items: center;
+
+    animation: 5s blink ease infinite;
+    transition-delay: 5s;
+
+    margin: auto;
+    border-radius: 25px;
+    padding: 0 6px;
+
+    max-width: 37px;
+    
+    background-color: get-color(live-badge-background);
+    color: get-color(live-badge-text);
+    font-size: 10px;
+    font-weight: bold;
+    text-transform: uppercase;
+
+    @keyframes blink {
+      from, to {
+        opacity: 0;
+      }
+      50% {
+        opacity: 1;
+      }
+    }
+  }
+}

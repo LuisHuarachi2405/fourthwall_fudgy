@@ -1,0 +1,34 @@
+.background-mark {
+  $triangle-size: 132px;
+
+  display: block;
+
+  position: absolute;
+
+  transform: rotate(45deg);
+
+  width: $triangle-size;
+  height: $triangle-size;
+
+  background: get-color(background);
+
+  &--top-left {
+    top: -($triangle-size * 0.7);
+    left: -($triangle-size * 0.7);
+
+    @include media-query(sm) {
+      top: -($triangle-size/2);
+      left: -($triangle-size/2);
+    }
+  }
+
+  &--bottom-right {
+    bottom: -($triangle-size * 0.7);
+    right: -($triangle-size * 0.7);
+
+    @include media-query(sm) {
+      bottom: -($triangle-size/2);
+      right: -($triangle-size/2);
+    }
+  }
+}

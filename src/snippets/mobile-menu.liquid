@@ -1,0 +1,102 @@
+<aside 
+  data-drawer="mobile-menu" 
+  class="drawer hidden@sm"
+>
+  <div class="drawer__background" data-drawer-trigger-primary="mobile-menu"></div>
+  <div class="drawer__content drawer__content--small mobile-menu">
+    <div class="mobile-menu__section mobile-menu__section--header">
+      <a href="#" class="mobile-menu__close" data-drawer-trigger-primary="mobile-menu">
+        {% include 'icon-close' %}
+      </a>
+    </div>
+    <div class="mobile-menu__section mobile-menu__section--body">
+      <div class="mobile-menu__nav">
+        <ul class="mobile-menu__list">
+          {% for link in linklists[section.settings.menu].links %}
+            <li class="mobile-menu__list-item">
+              {% if link.links != blank %}
+                <label for="input-drawer-{{ forloop.index0 }}" class="mobile-menu__link">
+                  {{ link.title }}
+
+                  <div class="mobile-menu__link-icon">
+                    {% include 'icon-chevron-right' %}
+                  </div>
+                </label>
+              {% else %}
+                <a
+                  href="{{ link.url | localized_url }}"
+                  class="mobile-menu__link"
+                >
+                  {{ link.title }}
+                </a>
+              {% endif %}
+
+              {% if link.links != blank %}
+                <input type="checkbox" id="input-drawer-{{ forloop.index0 }}" class="drawer__checkbox hidden" data-drawer-trigger-secondary>
+                <div class="drawer__content drawer__content--small">
+                  <div class="mobile-menu__section mobile-menu__section--header">
+                    <label href="#" class="mobile-menu__close" for="input-drawer-{{ forloop.index0 }}">
+                      {% include 'icon-chevron-left' %}
+                    </label>
+                    <div class="mobile-menu__label">
+                      {{ link.title }}
+                    </div>
+                    <div class="mobile-menu__right"></div>
+                  </div>
+                  <div class="mobile-menu__section mobile-menu__section--body">
+                    <div class="mobile-menu__nav">
+                      <ul class="mobile-menu__list">
+                        {% for childlink in link.links %}
+                          <li class="mobile-menu__list-item">
+                            <a class="mobile-menu__link" href="{{ childlink.url | localized_url }}">
+                              {{ childlink.title }}
+                            </a>
+                          </li>
+                        {% endfor %}
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              {% endif %}
+            </li>
+          {% endfor %}
+
+          {% if section.settings.show_currency_selector == true and shop.enabled_currencies.size > 1 %}
+            <li class="mobile-menu__list-item">
+              <a for="input-drawer" class="mobile-menu__link" data-accordion="trigger">
+                {{ cart_currency }}
+
+                {% if shop.enabled_currencies != blank %}
+                  <div class="mobile-menu__link-icon">
+                    {% include 'icon-chevron-bottom' %}
+                  </div>
+                {% endif %}
+              </a>
+
+              {% if shop.enabled_currencies != blank %}
+                <div class="mobile-menu__dropdown mobile-menu__dropdown--content">
+                  <ul class="mobile-menu__dropdown-inner">
+                    {% for currency in shop.enabled_currencies %}
+                      <li class="mobile-menu__dropdown-item">
+                        <a class="mobile-menu__dropdown-link" href="/localization?currency={{ currency }}&return_to={{ request_page }}">
+                          {{ currency }}
+                        </a>
+                      </li>
+                    {% endfor %}
+                  </ul>
+                </div>
+              {% endif %}
+            </li>
+          {% endif %}
+        </ul>
+      </div>
+    </div>
+    <div class="mobile-menu__section mobile-menu__section--socials">
+      <div class="mobile-menu__list-social">
+        <ul class="mobile-menu__socials">
+          {% include 'socials', li_class: 'mobile-menu__social', a_class: 'mobile-menu__social-link', badge_class: 'mobile-menu__social-badge' %}
+        </ul>
+      </div>
+    </div>
+  </div>
+</aside>

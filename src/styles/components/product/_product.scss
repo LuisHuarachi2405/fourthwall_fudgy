@@ -1,0 +1,28 @@
+.product {
+  $this: &;
+
+  position: relative;
+  z-index: 2;
+
+  &__breadcrumbs {
+    margin-bottom: 32px;
+
+    @include media-query(sm) {
+      margin-bottom: 40px;
+    }
+  }
+
+  &__gallery {
+    @include media-query(md) {
+      margin-right: 70px;
+    }
+  }
+
+  &__info {
+    margin-top: 32px;
+
+    @include media-query(sm) {
+      margin-top: 0;
+    }
+  }
+}

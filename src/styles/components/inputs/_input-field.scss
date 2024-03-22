@@ -1,0 +1,250 @@
+.input-field {
+  $this: &;
+
+  position: relative;
+
+  transition: border-color $transition-time;
+
+  border: $text-input-border;
+  border-radius: $input-border-radius;
+
+  width: 100%;
+  min-width: 80px;
+  height: $input-height;
+
+  background-color: get-color(input-background);
+
+  font-family: $input-font-family;
+  font-size: font-size(16px);
+  line-height: $input-line-height;
+
+  @include media-query(sm) {
+    font-size: $input-font-size;
+  }
+
+  &:focus-within {
+    border-color: get-color(input-border-focus);
+  }
+
+  &__input {
+    @include autofill-fix(get-color(input-text));
+
+    display: block;
+
+    transition: color $transition-base;
+
+    -webkit-appearance: none;
+    outline: none;
+
+    border: 0;
+    padding: 0 $input-horizontal-padding;
+
+    box-sizing: border-box;
+
+    width: 100%;
+    height: 100%;
+
+    background: transparent;
+
+    cursor: text;
+
+    color: get-color(input-text);
+    font-weight: inherit;
+    font-style: inherit;
+    line-height: $input-line-height;
+
+    &:focus,
+    &.filled {
+      padding-top: 1.25em;
+
+      & + #{$this}__label,
+      & + * + #{$this}__label {
+        transform: translateY(-50%) translateY(-0.7em) scale(0.8);
+        color: get-color(text-pale);
+      }
+    }
+
+    &::placeholder {
+      transition: color $transition-base;
+      opacity: 1;
+      color: rgba(get-color(on-background-rgb), 0.6);
+    }
+
+    &:focus {
+      &::placeholder {
+        color: rgba(get-color(on-background-rgb), 0.4);
+      }
+    }
+
+    &--bold {
+      font-weight: $font-weight-base-bold;
+    }
+  }
+
+  &__label {
+    position: absolute;
+
+    top: (($input-height / 2) - $input-border-width);
+    left: $input-horizontal-padding;
+
+    pointer-events: none;
+
+    transform: translateY(-50%);
+    transform-origin: left center;
+
+    transition: left $transition-base, transform $transition-base,
+      color $transition-base;
+
+    color: get-color(input-label);
+
+    &--bold {
+      font-weight: $font-weight-base-bold;
+    }
+  }
+
+  &__icon {
+    display: flex;
+
+    position: absolute;
+    z-index: 1;
+
+    top: -$input-border-width;
+    left: $input-horizontal-padding;
+
+    align-items: center;
+
+    transform: translateY(-1px);
+
+    width: $input-icon-width;
+    height: $input-height;
+  }
+
+  &__prefix {
+    display: none;
+    position: absolute;
+    top: 50%;
+    left: $input-horizontal-padding;
+
+    transform: translateY(-50%);
+
+    transition: transform $transition-base;
+  }
+
+  &__button {
+    align-self: center;
+    flex-shrink: 0;
+    padding-right: 6px;
+  }
+
+  &--inline-button {
+    display: flex;
+    border-radius: $button-border-radius;
+  }
+
+  &--textarea {
+    height: auto;
+
+    #{$this}__input {
+      position: relative;
+      height: 100px;
+      resize: vertical;
+
+      &:focus,
+      &.filled {
+        padding-top: 1.5em;
+      }
+    }
+  }
+
+  &--icon {
+    #{$this}__input {
+      padding-left: (2 * $input-horizontal-padding + $input-icon-width);
+    }
+
+    #{$this}__label {
+      left: (2 * $input-horizontal-padding + $input-icon-width);
+    }
+  }
+
+  &--prefix {
+    #{$this}__input {
+      padding-left: 36px;
+
+      &:focus,
+      &.filled {
+        & + #{$this}__prefix,
+        & + * + #{$this}__prefix {
+          display: block;
+          transform: translateY(-50%) translateY(0.6em);
+        }
+      }
+    }
+  }
+
+  &--base {
+    #{$this}__input {
+      padding-top: 0;
+
+      &:focus {
+        padding-top: 0;
+      }
+    }
+  }
+
+  &--quantity {
+    width: 90px;
+
+    @include media-query(sm) {
+      width: 120px;
+    }
+
+    #{$this}__input {
+      &::outer-spin-button,
+      &::inner-spin-button {
+        appearance: none;
+        margin: 0;
+      }
+
+      &[type='number'] {
+        appearance: textfield;
+      }
+    }
+  }
+  &--no-top-border-radius {
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+  }
+
+  &--no-bottom-border-radius {
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+  }
+
+  &--as-button {
+    border-width: 2px;
+  }
+
+  &--bold {
+    #{$this}__input,
+    #{$this}__prefix {
+      font-weight: $font-weight-base-bold;
+    }
+  }
+
+  &--cart-item {
+    height: $input-height * 0.85;
+  }
+
+  &.selected {
+    border-width: 1px;
+  }
+
+  &--expand {
+    max-width: 100%;
+    width: 100%;
+  }
+
+  &--rounded {
+    border-radius: Min($input-border-radius, 20px);
+  }
+}

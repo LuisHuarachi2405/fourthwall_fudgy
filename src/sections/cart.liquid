@@ -1,0 +1,11 @@
+<section data-testid="main.single.section" class="cart-container" data-cart="cart">
+  <div class="container container--8 wrapper">
+    <div id="cart-component" class="cart-container__cart-component"{% if currency.show_iso_code %} data-currency="{{ currency.iso_code }}"{% endif %}></div>
+  </div>
+</section>
+
+{% schema %} 
+  { 
+    "name": "Cart" 
+  }
+{% endschema %}

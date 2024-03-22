@@ -1,0 +1,3 @@
+@function get-color-alpha($min-alpha, $max-alpha, $reference-color-brightness) {
+  @return calc(#{$max-alpha} - #{$max-alpha - $min-alpha} * #{$reference-color-brightness} / 255);
+}

@@ -1,0 +1,42 @@
+<section 
+  data-section-id="{{ section.id }}" 
+  data-section-type="image-section"
+  data-testid="main.single.section"
+  class="image-section image-section--{{ section.id }}" 
+>
+  <div class="image-section__inner">
+    <div class="container wrapper">
+      <div class="image-section__image-container">
+        <img 
+          class="image-section__image" 
+          src="{{ section.settings.image | img_url: '1400x' }}" 
+          alt="{{ section.settings.image | img_alt }}"
+        />
+      </div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+  {
+    "name": "Image",
+    "group": "Layout",
+    "position": 1,
+    "description": "Upload an image.",
+    "settings": [
+      {
+        "type": "image_picker",
+        "id": "image",
+        "label": "Image",
+        "default": "/sample-banner.jpg",
+        "info": "Recommended aspect ratio: 3:2 (width:height)"
+      }
+    ],
+    "presets": [
+      {
+        "category": "Content",
+        "name": "Image"
+      }
+    ]
+  }
+{% endschema %}

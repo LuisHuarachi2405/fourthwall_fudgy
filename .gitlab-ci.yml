@@ -1,0 +1,10 @@
+# Use shared .gitlab-ci.yml
+include:
+  - project: 'fourthwall/themes/shared'
+    ref: master
+    file: '/templates/.gitlab-ci.yml'
+
+publish:
+  script:
+    - if [ ! -f $RELEASE_NAME.zip ]; then echo "Could not find $RELEASE_NAME.zip, make sure that you have created following artifact"; exit 1; fi
+    - gitlab-release --message "Boilerplate $RELEASE_NAME release" $RELEASE_NAME.zip screenshots/desktop.png screenshots/mobile.png

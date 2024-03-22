@@ -1,0 +1,109 @@
+<div data-testid="main.single.section" class="footer">
+  <div class="wrapper">
+    <div class="footer__inner">
+      <div class="footer__top">
+        <div class="grid grid--middle">
+          <div class="grid__column grid__column--12 grid__column--4@md">
+            <div class="footer__socials">
+              <ul class="footer__list footer__list--socials">
+                {% include 'socials', li_class: 'footer__list-item footer__list-item--social', a_class: 'footer__social-link', badge_class: 'footer__social-badge' %}
+              </ul>
+            </div>
+          </div>
+
+          <div class="grid__column grid__column--12 grid__column--8@md grid__column--first@md">
+            <nav class="footer__nav">
+              <ul class="footer__list footer__list--menu">
+                {% if section.settings.show_currency_selector == true and shop.enabled_currencies.size > 1 %}
+                  <li class="footer__list-item">
+                    <a class="footer__menu-link footer__menu-link--icon">
+                      {{ cart_currency }}
+                      {% if shop.enabled_currencies != blank %}
+                        <span class="footer__link-icon">
+                          {% include 'icon-chevron-bottom' %}
+                        </span>
+                      {% endif %}
+                    </a>
+                    {% if shop.enabled_currencies != blank %}
+                      <div class="footer__dropdown footer__dropdown--content">
+                        <ul class="footer__dropdown-inner">
+                          {% for currency in shop.enabled_currencies %}
+                            <li class="footer__dropdown-item">
+                              <a class="footer__dropdown-link" href="/localization?currency={{ currency }}&return_to={{ request_page }}">
+                                {{ currency }}
+                              </a>
+                            </li>
+                          {% endfor %}
+                        </ul>
+                      </div>
+                    {% endif %}
+                  </li>
+                {% endif %}
+
+                {% for link in linklists[section.settings.menu].links %}
+                  <li class="footer__list-item">
+                    <a href="{{ link.url | localized_url }}" class="footer__menu-link">{{ link.title }}</a>
+                  </li>
+                {% endfor %}
+              </ul>
+            </nav>  
+          </div>
+        </div>
+      </div>
+
+      <div class="footer__bottom">
+        <ul class="footer__list footer__list--bottom">
+          {% assign copyright_text = shop.name -%}
+
+          {% if section.settings.copyright_text != blank %}
+            {% assign copyright_text = section.settings.copyright_text %}
+          {% endif -%}
+          
+          <li class="footer__list-item">
+            <div class="footer__copy">&copy; {{ 'now' | date: '%Y' }} {{ copyright_text }}</div>
+          </li>
+
+          {% if section.settings.show_powered_by == true %}
+            <li class="footer__list-item">
+              <div class="footer__powered-by">
+                {{ powered_by_link }}
+              </div>
+            </li>
+          {% endif %}
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% schema %} 
+  { 
+    "name": "Footer",
+    "settings": [
+      {
+        "type": "link_list",
+        "id": "menu",
+        "label": "Menu",
+        "default": "footer"
+      },
+      {
+        "type": "checkbox",
+        "id": "show_currency_selector",
+        "label": "Show currency selector",
+        "default": true
+      },
+      {
+        "type": "text",
+        "id": "copyright_text",
+        "label": "Copyright text",
+        "info": "Leave blank to display shop name."
+      },
+      {
+        "type": "checkbox",
+        "id": "show_powered_by",
+        "label": "Show \"Powered by Fourthwall\"",
+        "default": true
+      }
+    ]
+  }
+{% endschema %}

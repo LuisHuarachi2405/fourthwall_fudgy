@@ -1,0 +1,19 @@
+.template-404 {
+  padding-top: 68px;
+  padding-bottom: 50px;
+
+  text-align: center;
+
+  @include media-query(sm) {
+    padding-top: 132px;
+    padding-bottom: 110px;
+  }
+
+  &__subheading {
+    margin-top: 12px;
+  }
+
+  &__cta {
+    margin-top: 25px;
+  }
+}

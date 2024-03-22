@@ -1,0 +1,26 @@
+{% assign shop_socials = "youtube,instagram,facebook,twitter,tiktok,snapchat,discord,twitch,spotify,reddit,apple_podcasts,kick,kofi,patreon,threads" | split: "," %}
+
+{% for social in shop.social_networks %}
+{% comment %} TODO: Add a conditional check to make sure the snippet exists once backend is updated. {% endcomment %}
+  {% if shop_socials contains social.name %}
+    <li class="{{ li_class }}">
+      <a
+        {% if social.name == "twitch" and shop.metafields.twitch.live %}
+          href="{{ shop.metafields.twitch.url }}"
+        {% else %}
+          href="{{ social.public_url }}"
+        {% endif %}
+        target="_blank"
+        class="{{ a_class }}"
+      >
+        {% assign icon_file = "icon-" | append: social.name %}
+        {% include icon_file %}
+        {% if social.name == "twitch" and shop.metafields.twitch.live %}
+          <div class="{{ badge_class }}">
+            Live
+          </div>
+        {% endif %}
+      </a>
+    </li>
+  {% endif %}
+{% endfor %}

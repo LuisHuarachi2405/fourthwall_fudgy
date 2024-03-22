@@ -1,0 +1,189 @@
+{% assign posts = 0 %}
+{% for post in membership_posts %}
+  {% assign posts = posts | plus: 1  %}
+{% endfor %}
+
+{% assign filtered_posts = membership_posts %}
+
+{% if section.settings.types %}
+  {% assign filtered_posts = filtered_posts | where_exp: 'type', 'IN', section.settings.types %}
+{% endif %}
+
+{% if section.settings.tag_ids %}
+  {% assign filtered_posts = filtered_posts | where_exp: 'tag_ids', 'ALL', section.settings.tag_ids %}
+{% endif %}
+
+<section recent-posts-ref data-section-id="{{ section.id }}" data-testid="main.single.section" class="recent-posts recent-posts--{{ section.id }}">
+  <div class="container wrapper">
+    <div class="recent-posts__inner">
+      <div class="recent-posts__header">
+        <div class="section-header">
+          <h2 class="section-header__heading{% if section.settings.heading_alignment == 'center' %} section-header__heading--center{% endif %}">{{ section.settings.heading }}</h2>
+
+          {% if section.settings.show_button %}
+            <div class="section-header__cta">
+              <a href="/supporters" class="button button--outline button--small">
+                {{ section.settings.button_text }}
+              </a>
+            </div>
+          {% endif %}
+        </div>
+      </div>
+
+      <div class="recent-posts__grid">
+        <div class="grid grid--waffle">
+          {% if filtered_posts %}
+            {% assign number_of_posts = section.settings.number_of_posts | plus: 0 %}
+            {% assign count_posts = 0 %}
+
+            {% for post in filtered_posts offset: 0 %}
+              {% if user %}
+                {% include 'post-types', post: post %}
+                {% assign count_posts = count_posts | plus: 1 %}
+              {% else %}
+                {% include 'post-types', post: post, no_user: "locked" %}
+                {% assign count_posts = count_posts | plus: 1 %}
+              {% endif %}
+
+              {% if count_posts == number_of_posts %}
+                {% break %}
+              {% endif %}
+            {% endfor %}
+
+            {% if count_posts == 0 %}
+              <p class="post-tile__empty hidden" data-posts="none">No posts were found. Try adding posts or changing the section filters.</p>
+            {% endif %}
+          {% else %}
+            This is a view for loading posts
+          {% endif %}
+
+          {% if posts == 0 %}
+            <p class="post-tile__empty hidden" data-posts="none">Please add posts on your Memberships feed.</p>
+          {% endif %}
+
+          {% for i in (1..3) %}
+            <div class="grid__column grid__column--12 grid__column--6@sm grid__column--4@md" data-post-tile-skeleton>
+              {% include 'post-tile'
+              , post_type: "Skeleton",
+              post_link: "/",
+              post_state: "skeleton",
+              publish_date: "",
+              title: "",
+              description: "",
+              image: "",
+              unavailable_image: "",
+              skeleton: true %}
+            </div>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script type="text/javascript">var design_mode={{ request.design_mode }};</script>
+
+{% schema %}
+  {
+    "name": "Recent posts",
+    "group": "Memberships",
+    "position": 1,
+    "description": "Embed your latest membership posts",
+    "settings": [
+      {
+        "type": "text",
+        "id": "heading",
+        "label": "Heading",
+        "default": "Recent posts"
+      },
+      {
+        "type": "header",
+        "content": "Heading alignment (Desktop)"
+      },
+      {
+        "type": "select",
+        "id": "heading_alignment",
+        "label": "Heading alignment",
+        "options": [
+          {
+            "value": "left",
+            "label": "Left"
+          },
+          {
+            "value": "center",
+            "label": "Center"
+          }
+        ],
+        "default": "left"
+      },
+      {
+        "type": "header",
+        "content": "Post to show"
+      },
+      {
+        "type": "memberships_type_post_picker",
+        "id": "types",
+        "label": "Post types"
+      },
+      {
+        "type": "memberships_tag_post_picker",
+        "id": "tag_ids",
+        "label": "Post tags"
+      },
+      {
+        "type": "select",
+        "id": "number_of_posts",
+        "label": "Number of posts",
+        "options": [
+          {
+            "value": "3",
+            "label": "3"
+          },
+          {
+            "value": "6",
+            "label": "6"
+          },
+          {
+            "value": "9",
+            "label": "9"
+          },
+          {
+            "value": "12",
+            "label": "12"
+          },
+          {
+            "value": "15",
+            "label": "15"
+          },
+          {
+            "value": "18",
+            "label": "18"
+          }
+        ],
+        "default": "3"
+      },
+      {
+        "type": "header",
+        "content": "Button"
+      },
+      {
+        "type": "checkbox",
+        "id": "show_button",
+        "label": "Show button that links to feed",
+        "default": true
+      },
+      {
+        "type": "text",
+        "id": "button_text",
+        "label": "Button text",
+        "default": "Browse all"
+      }
+    ],
+    "presets": [
+      {
+        "category": "Content",
+        "name": "Recent posts"
+      }
+    ]
+  }
+{% endschema %}

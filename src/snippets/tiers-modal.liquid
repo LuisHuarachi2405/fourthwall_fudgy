@@ -1,0 +1,98 @@
+<div data-modal="tiers" class="modal hidden">
+  <div class="modal__background" data-modal-trigger-close="tiers"></div>
+  <div data-modal-content="tiers" class="modal__content modal__content--gift modal__content--large hidden">
+    <button data-modal-trigger-close="tiers" class="modal__close">
+      {% include 'icon-close' %}
+    </button>
+    <div class="tiers-modal__content-inner">
+      <div class="tiers-modal__gift">
+        <div class="tiers-modal__section">
+          <div class="tiers-modal__header">
+            <p class="tiers-modal__title">Gift <span data-gift-tier="name"></span> membership</p>
+            <p class="tiers-modal__text">Your gift will be given away live at <span><a href="{{ social_networks.twitch.url }}">{{ social_networks.twitch.url | remove: 'https://' }}</a>!</span></p>
+          </div>
+        </div>
+        <form
+          action="/giveaways"
+          method="post"
+          data-turbo="false"
+          class="tiers-modal__checkout-form"
+          data-gift-tier="form"
+        >
+          <div class="tiers-modal__section">
+            <div class="tiers-modal__item-info">
+              <div class="tiers-modal__options-container" data-gift-tier="options">
+                <p>Subscription length:</p>
+                <div class="tiers-modal__options">
+                  <input name="id" type="radio" id="monthly" class="tiers-modal__option-input hidden" data-gift-tier-monthly-price data-gift-tier="price-input">
+                  <label for="monthly" class="tiers-modal__option-label">
+                    <span>1 month</span>
+                    <span id="monthly-price" class="tiers-modal__option-price" data-gift-tier="price-span"></span>
+                  </label>
+                  <input name="id" type="radio" id="annual" class="tiers-modal__option-input hidden" data-gift-tier-annual-price data-gift-tier="price-input">
+                  <label for="annual" class="tiers-modal__option-label">
+                    <span>1 year</span>
+                    <span id="annual-price" class="tiers-modal__option-price" data-gift-tier="price-span"></span>
+                  </label>
+                </div>
+              </div>
+              <div class="tiers-modal__quantity">
+                <p>Number of gifts:</p> 
+                <div class="tiers-modal__quantity-container">
+                  <div
+                    data-select="container"
+                    class="select-field select-field--base select-field--quantity select-field--non-transparent select-field--rounded select-field--expand"
+                  >
+                    <select data-gift-tier="quantity" name="quantity" class="select-field__select" data-trigger-input="more">
+                      {% for i in (1..10) %}
+                        {% if forloop.last == true %}
+                          <option value="more">{{ i }}+</option>
+                        {% else %}
+                          <option value="{{ i }}">{{ i }}</option>
+                        {% endif %}
+                      {% endfor %}
+                    </select>
+                    <span class="select-field__dropdown-icon">
+                      {% include 'icon-dropdown' %}
+                    </span>
+                  </div>
+                  <div
+                    data-select-input="more"
+                    class="input-field input-field--base input-field--quantity input-field--rounded input-field--expand hidden"
+                  >
+                    <input data-gift-tier="quantity" type="number" min="1" class="input-field__input" placeholder="Qty">
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="tiers-modal__section">
+            <div class="tiers-modal__cta">
+              <div class="tiers-modal__cta-item">
+                <a 
+                  href="#" 
+                  class="tiers-modal__cancel"
+                  data-modal-trigger-close="tiers"
+                >
+                  Cancel
+                </a>
+              </div>
+
+              <div class="tiers-modal__checkout">
+                <button
+                  type="submit"
+                  name="checkout"
+                  class="button button--primary button--expand"
+                >
+                  Checkout <span data-gift-tier="total-price"></span>
+                </button>
+              </div>
+            </div>
+          </div>
+          <p data-gift-tier="error" class="tiers-modal__error">Please choose the quantity.</p>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

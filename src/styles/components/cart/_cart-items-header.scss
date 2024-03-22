@@ -1,0 +1,43 @@
+.cart-items-header {
+  @include font-heading();
+
+  display: flex;
+
+  color: get-color(heading);
+  font-size: font-size-heading(14px);
+
+  & > * + * {
+    margin-left: 15px;
+  }
+
+  &__item {
+    flex: 1 1 auto;
+  }
+
+  &__quantity {
+    display: none;
+
+    @include media-query(sm) {
+      display: block;
+      flex: 0 0 180px;
+    }
+  }
+
+  &__price {
+    display: none;
+
+    @include media-query(sm) {
+      display: block;
+      flex: 0 0 80px;
+    }
+  }
+
+  &__remove {
+    display: none;
+
+    @include media-query(sm) {
+      display: block;
+      flex: 0 0 30px;
+    }
+  }
+}

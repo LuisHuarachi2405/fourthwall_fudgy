@@ -1,0 +1,30 @@
+.table {
+  border-spacing: 0;
+  border-collapse: collapse;
+  width: 100%;
+
+  tr {
+    & > td {
+      text-align: center;
+
+      &:first-child {
+        text-align: left;
+      }
+
+      &:last-child {
+        text-align: right;
+      }
+    }
+  }
+
+  td {
+    padding-top: 10px;
+    padding-bottom: 10px;
+  }
+
+  tfoot {
+    td {
+      padding-top: 8px;
+    }
+  }
+}

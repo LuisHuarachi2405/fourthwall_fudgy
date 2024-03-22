@@ -1,0 +1,60 @@
+.instagram-feed {
+  $this: &;
+
+  &__header {
+    margin-bottom: 24px;
+    text-align: center;
+  }
+
+  &__heading {
+    font-size: font-size-heading(24px);
+
+    @include media-query(sm) {
+      font-size: font-size-heading(32px);
+    }
+  }
+
+  &__heading-link {
+    color: get-color(text);
+    text-decoration: none;
+  }
+
+  &__post {
+    display: block;
+
+    position: relative;
+
+    padding-bottom: 100%;
+
+    width: 100%;
+    height: 0;
+
+    &:hover {
+      #{$this}__image {
+        opacity: 0.6;
+      }
+    }
+  }
+
+  &__image {
+    position: absolute;
+
+    left: 0;
+    top: 0;
+
+    transition: opacity 0.4s;
+
+    object-fit: cover;
+    object-position: center center;
+
+    width: 100%;
+    height: 100%;
+  }
+
+  &__small-column {
+    @include media-query(md) {
+      flex-basis: percentage(1 / 9);
+      max-width: percentage(1 / 9);
+    }
+  }
+}

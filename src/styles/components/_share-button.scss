@@ -1,0 +1,67 @@
+.share-button {
+  $background-hover-lightness: -10%;
+
+  display: inline-block;
+
+  border: 2px solid transparent;
+  border-radius: $button-border-radius;
+  padding: 16px 20px;
+
+  max-width: 320px;
+
+  cursor: pointer;
+
+  color: get-color(white);
+  font-size: font-size(16px);
+  line-height: $line-height-base;
+  font-weight: $font-weight-base-bold;
+  text-transform: $text-transform-base;
+  text-align: center;
+
+  @include media-query(sm) {
+    padding: 16px 30px;
+  }
+
+  &:hover {
+    color: get-color(white);
+  }
+
+  &__icon {
+    display: inline-block;
+    position: relative;
+    top: -0.1em;
+
+    margin-right: 4px;
+
+    vertical-align: middle;
+  }
+
+  &--expand {
+    display: block;
+    width: 100%;
+  }
+
+  &--twitter {
+    $bg-color: #1da1f2;
+    background-color: $bg-color;
+
+    &:hover {
+      background-color: scale-color(
+        $bg-color,
+        $lightness: $background-hover-lightness
+      );
+    }
+  }
+
+  &--facebook {
+    $bg-color: #3f5a99;
+    background-color: $bg-color;
+
+    &:hover {
+      background-color: scale-color(
+        $bg-color,
+        $lightness: $background-hover-lightness
+      );
+    }
+  }
+}

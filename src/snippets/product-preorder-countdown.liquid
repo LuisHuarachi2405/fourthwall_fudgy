@@ -1,0 +1,54 @@
+{%- if product.metafields.drop != blank -%}
+  <div data-countdown="countdown">
+
+    {%-liquid
+      assign time_zone_offset = "now" | date: "%z"
+      assign time_zone_abbr = "now" | date: "%Z"
+      assign date_format = '%a, %e %b %Y %H:%M:%S %z'
+    -%}
+
+    {% if product.metafields.drop.started == true %}
+      <span data-countdown="prefix">Available for</span> <span data-countdown="live"></span> <span data-countdown="suffix">(Ends on <span data-countdown="ends"></span>)</span>
+      {%- assign start_date = product.metafields.drop.start_date | append: ' ' | append: time_zone_offset | date: date_format | default: '' -%}
+      {%- assign end_date = product.metafields.drop.end_date | append: ' ' | append: time_zone_offset | date: date_format | default: '' -%}
+      <script type="application/json" data-countdown="json">
+        {
+          "dateFormat": "MMM D [at] h:mm A",
+          "label": "Sale",
+          "startDate": "{{ start_date }}",
+          "endDate": "{{ end_date }}",
+          "timezoneOffset": "{{ time_zone_offset }}",
+          "timezoneAbbr": "{{ time_zone_abbr }}",
+          "prefixLabel": "Available for",
+
+          "daysFormat": "%RDd ",
+          "countdownFormat": "%RHh %RMm"
+        }
+      </script>
+    {% else %}
+    <span data-countdown="prefix">Available in</span> <span data-countdown="live"></span> <span data-countdown="suffix">(<span data-countdown="ends"></span>)</span>
+      {%- assign start_date = "now" | date: date_format -%}
+      {%- assign end_date = product.metafields.drop.start_date | append: ' ' | append: time_zone_offset | date: date_format | default: '' -%}
+      <script type="application/json" data-countdown="json">
+        {
+          "dateFormat": "MMM D [at] h:mm A",
+          "label": "Sale",
+          "startDate": "{{ start_date }}",
+          "endDate": "{{ end_date }}",
+          "timezoneOffset": "{{ time_zone_offset }}",
+          "timezoneAbbr": "{{ time_zone_abbr }}",
+          "prefixLabel": "Available in",
+
+          "daysFormat": "%RDd ",
+          "countdownFormat": "%RHh %RMm",
+
+          "resetStartDate": "{{ product.metafields.drop.start_date | append: ' ' | append: time_zone_offset | date: date_format | default: '' }}",
+          "resetEndDate": "{{ product.metafields.drop.end_date | append: ' ' | append: time_zone_offset | date: date_format | default: '' }}",
+          "resetPrefixLabel": "Available for",
+          "resetSuffixLabel": "(please reload the page)",
+          "resetOnEnd": true
+        }
+      </script>
+    {% endif %}
+  </div>
+{%- endif -%}

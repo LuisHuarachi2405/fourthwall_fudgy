@@ -1,0 +1,12 @@
+.radio-field {
+  display: flex;
+  align-items: center;
+
+  &__input {
+    margin-right: 10px;
+  }
+
+  &__label {
+    cursor: pointer;
+  }
+}

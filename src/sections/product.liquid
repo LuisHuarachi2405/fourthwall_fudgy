@@ -1,0 +1,325 @@
+<section data-product="product" data-testid="main.single.section" class="product">
+  <div class="container wrapper">
+    <div class="product__breadcrumbs">
+      {% include 'breadcrumbs-product' %}
+    </div>
+
+    <div class="product__main">
+      <div class="grid">
+        <div class="grid__column grid__column--12 grid__column--7@sm">
+          {% if product.images.size > 0 %}
+            <div class="product__gallery">
+              {% include 'product-gallery' %}
+            </div>
+          {% endif %}
+        </div>
+
+        <div class="grid__column grid__column--12 grid__column--5@sm">
+          <div class="product__info">
+            <div class="product-info">
+              {% if product.promotion_badges %}
+                <div class="product-info__badges">
+                  {% for badge in product.promotion_badges %}
+                    <div class="badge badge--{{ badge.type }}">
+                      {{ badge.label }}
+                    </div>
+                  {% endfor %}
+                </div>
+              {% endif %}
+
+              <h1 data-testid="product.name" class="product-info__title">
+                {{ product.title }}
+              </h1>
+
+              {% unless product.gift %}
+                <div class="product-info__prices">
+                  <span>
+                    <s class="product-info__price{% if product.selected_or_first_available_variant.compare_at_price %} product-info__price--offer{% endif %}" data-product="compare-at-price" data-testid="product.compare-at-price">
+                      {% if product.selected_or_first_available_variant.compare_at_price %}
+                        {{ product.selected_or_first_available_variant.compare_at_price | money }}
+                      {% endif %}
+                    </s>
+                  </span>
+
+                  <span class="product-info__price product-info__price--original" data-product="price" data-testid="product.price"{% if currency.show_iso_code %} data-currency="{{ currency.iso_code }}"{% endif %}>
+                    {{ product.selected_or_first_available_variant.price | money }}
+                    <span>
+                      {% if currency.show_iso_code %}
+                        <span>{{ currency.iso_code }}</span>
+                      {% endif %}
+                    </span>
+                  </span>
+                </div>
+              {% endunless %}
+
+              {% if product.available and product.promotion_description %}
+                <div class="product-info__promotion-description">
+                  {{ product.promotion_description }}
+                </div>
+              {% endif %}
+
+              {% if product.description != blank %}
+              <div class="product-info__description">
+                <div class="html-formatter">
+                  {{ product.description }}
+                </div>
+              </div>
+              {% endif %}
+
+              {% if product.members_only and product.available %}
+                <div data-product="members-only" class="product-info__members-only hidden">
+                  <div class="product-info__members-only-heading">
+                    {% if product.available_for_all_tiers %}
+                      This product is available for members only
+                    {% else %}
+                      {% if product.required_tiers.size > 1 %}
+                        This product is only available for
+                        {% for tier in product.required_tiers %}
+                          {% if forloop.last == true %} and {% endif %}
+                          {{ tier.name }}
+                          {%- if forloop.last == false and forloop.first == false %}, 
+                          {% elsif forloop.first == true and product.required_tiers.size > 2 %}, {% endif %}
+                        {% endfor %}
+                        members
+                      {% elsif product.required_tiers.size == 1 %}
+                        This product is only available for {{ product.required_tiers[0].name }} members
+                      {% endif %}
+                    {% endif %}
+                  </div>
+
+                  <div class="product-info__members-only-cta-container">
+                    <a
+                      data-product="non-member"
+                      href="/supporters/pricing"
+                      class="button button--primary hidden"
+                    >
+                      Join now
+                    </a>
+
+                    <a
+                      data-product="change-tier"
+                      href="/supporters/payments/billing/edit"
+                      class="button button--primary hidden"
+                    >
+                      Change tier
+                    </a>
+
+                    <a
+                      data-product="not-logged-in"
+                      href="/supporters/sign_in"
+                      class="button button--outline hidden"
+                    >
+                      Login
+                    </a>
+                  </div>
+                </div>
+              {% endif %}
+
+              {% if product.has_only_default_variant != true %}
+                <div 
+                  class="product-info__options{% if product.members_only %} hidden{% endif %}"
+                  data-product="options"
+                >
+                  {% include 'product-options' %}
+                </div>
+              {% endif %}
+
+              {%- if product.gift -%}
+                <input type="hidden" data-product="variant-redeem" name="variant_id" form="form-redeem" required>
+              {%- endif -%}
+
+              {% assign today_date = 'now' | date: '%s' %}
+              {% assign start_date = product.metafields.drop.start_date | date: '%s' %}
+              {% assign end_date = product.metafields.drop.end_date | date: '%s' %}
+
+              {% assign startDateDiffSeconds = start_date | minus: today_date %}
+              {% assign startDateDifference = startDateDiffSeconds %}
+
+              {% assign endDateDiffSeconds = end_date | minus: today_date %}
+              {% assign endDateDifference = endDateDiffSeconds %}
+
+              {% if startDateDifference > 0 %}
+                {% assign preorder = "PRE" %}
+              {% elsif product.metafields.drop.finished == false and product.metafields.drop.started == true %}
+                {% assign preorder = "ACTIVE" %}
+              {% elsif product.metafields.drop != blank and product.metafields.drop.finished == true %}
+                {% assign preorder = "END" %}
+              {% endif %}
+
+              {% if preorder == "PRE" or product.available and preorder == "ACTIVE" %}
+                <div class="product-info__preorder">
+                  {% include 'product-preorder-countdown' %}
+                </div>
+              {% endif %}
+
+              {% unless preorder == "PRE" %}
+                <div 
+                  class="product-info__cta{% if product.members_only and product.available %} hidden{% endif %}"
+                  data-product="cta"
+                >
+                {% assign gift_currency = '/en-' | append: cart_currency | downcase %}
+                {% if product.available and preorder != "END" %}
+                  <div class="product-info__cta-main">
+                    {% if product.gift %}
+                      <div class="product-info__cta-item product-info__cta-item--redeem">
+                        <form action="{{ gift_currency }}/gifts/{{ gift.id }}/redeem" id="form-redeem" method="POST" data-product="redeem">
+                          <input type="hidden" name="gift_item_id" form="form-redeem" value="{{ product.gift_id }}">
+                          <button type="submit" data-cta="cta" data-cta-label="Redeem your gift" class="button button--primary button--expand">
+                            <span data-cta-label>Redeem your gift</span>
+                            <span class="button__spinner">
+                              <div class="spinner spinner--small"></div>
+                            </span>
+                          </button>
+                        </form>
+                      </div>
+                    {% else %}
+                      <div class="product-info__cta-item product-info__cta-item--quantity">
+                        <div
+                          data-select="container"
+                          class="select-field select-field--base select-field--quantity select-field--transparent"
+                        >
+                          <select
+                            data-product="quantity"
+                            data-trigger-input="{{ product.id }}"
+                            data-testid="product.quantity"
+                            class="select-field__select"
+                          >
+                            {% for i in (1..10) %}
+                              {% if forloop.last == true %}
+                                <option value="more">{{ i }}+</option>
+                              {% else %}
+                                <option value="{{ i }}">{{ i }}</option>
+                              {% endif %}
+                            {% endfor %}
+                          </select>
+
+                          <span class="select-field__dropdown-icon">
+                            {% include 'icon-dropdown' %}
+                          </span>
+                        </div>
+
+                        <div
+                          data-select-input="{{ product.id }}"
+                          class="input-field input-field--base input-field--quantity input-field--transparent hidden"
+                        >
+                          <input data-product="quantity" type="number" min="1" class="input-field__input" placeholder="Qty">
+                        </div>
+                      </div>
+
+                      <div class="product-info__cta-item product-info__cta-item--add-to-cart">
+                        <button class="button button--primary button--expand" data-product="add" data-cta="cta" data-cta-label="Add to Cart" data-testid="product.add.to.cart">
+                          <span data-cta-label>Add to Cart</span>
+                          <span class="button__spinner">
+                            <div class="spinner spinner--small"></div>
+                          </span>
+                        </button>
+                      </div>
+                    {% endif %}
+                  </div>
+
+                  <p data-product="error" class="product-info__error"></p>
+                {% else %}
+                  <button class="button button--primary button--expand" disabled>
+                    <span>Out of Stock</span>
+                  </button>
+                {% endif %}
+                </div>
+              {% endunless %}
+
+              {% if shop.metafields.twitch.live and shop.metafields.giveaways.enabled and product.metafields.giveaway.enabled and product.available %}
+                {% unless product.gift %}
+                  <div 
+                    class="product-info__gift{% if product.members_only %} hidden{% endif %}"
+                    data-product="gift"
+                  >
+                    <div class="product-info__header">
+                      <h3 class="product-info__heading">
+                        Gift to Twitch Chat
+                      </h3>
+                      <div class="product-info__social-icon">
+                        <a href="{{ shop.metafields.twitch.url }}" target="_blank" class="product-info__icon">
+                          <div class="product-info__badge">
+                            Live
+                          </div>
+                          {% include 'icon-twitch' %}
+                        </a>
+                      </div>
+                    </div>
+
+                    <div class="product-info__container">
+                      {% form 'giveaway', product %}
+                        <div class="product-info__giveaways">
+                          {{ shop.owner}} is currently <a class="product-info__social-link" href="{{ social_networks['twitch'].url }}" target="_blank"> live on Twitch</a>. You can gift this product to lucky viewers who watch the stream!
+                          <div class="product-info__cta-gift">
+                            <div class="product-info__cta-item product-info__cta-item--quantity">
+                              <div
+                                data-select="container"
+                                class="select-field select-field--base selsect-field--quantity select-field--transparent"
+                              >
+                                <select
+                                  data-product="gift"
+                                  name="quantity"
+                                  data-trigger-input="gift"
+                                  class="select-field__select"
+                                >
+                                  {% for i in (1..10) %}
+                                    {% if forloop.last == true %}
+                                      <option value="more">{{ i }}+</option>
+                                    {% else %}
+                                      <option value="{{ i }}">{{ i }}</option>
+                                    {% endif %}
+                                  {% endfor %}
+                                </select>
+
+                                <span class="select-field__dropdown-icon">
+                                  {% include 'icon-dropdown' %}
+                                </span>
+                              </div>
+
+                              <div
+                                data-select-input="gift"
+                                class="input-field input-field--base input-field--quantity input-field--transparent hidden"
+                              >
+                                <input type="number" min="1" class="input-field__input" placeholder="Qty">
+                              </div>
+                            </div>
+
+                            <div class="product-info__cta-item product-info__cta-item--gift">
+                              <button class="button button--primary button--expand" type="submit">
+                                <span>Gift to Twitch Chat</span>
+                              </button>
+                            </div>
+                          </div>
+                        </div>
+                      {% endform %}
+                    </div>
+                  </div>
+                {% endunless %}
+              {% endif %}
+
+              {% if product.additional_sections.size > 0 %}
+              <div class="product-info__additional-info">
+                {% include 'product-additional-info' %}
+              </div>
+              {% endif %}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% include 'product-drawer' %}
+
+{% unless product == empty %}
+  <script type="application/json" data-product="json">
+    {{ product | json }}
+  </script>
+{% endunless %}
+
+{% schema %}
+  {
+    "name": "Product"
+  }
+{% endschema %}

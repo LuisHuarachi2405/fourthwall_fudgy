@@ -1,0 +1,19 @@
+{% if settings.logo != blank %}
+  {%- capture logo_image_size -%}{{ settings.logo_width | escape }}x{%- endcapture -%}
+
+  {% if class == blank %}
+    {% assign class = "logo-image" %}
+  {% endif %}
+
+  <img
+    src="{{ settings.logo | img_url: logo_image_size }}"
+    srcset="{{ settings.logo | img_url: logo_image_size }} 1x, {{ settings.logo | img_url: logo_image_size, scale: 2 }} 2x"
+    alt="{{ settings.logo.alt | default: shop.name }}"
+    class="{{ class }}"
+    itemprop="logo"
+  >
+{% else %}
+  <span class="text-logo">
+    {{ shop.name }}
+  </span>
+{% endif %}

@@ -1,0 +1,14 @@
+.body {
+  position: relative;
+
+  padding-bottom: 0;
+  width: 100%;
+  min-height: 100%;
+
+  background-color: get-color(background);
+
+  // FIXME: Boilerplate
+  &.no-scroll {
+    overflow: hidden;
+  }
+}

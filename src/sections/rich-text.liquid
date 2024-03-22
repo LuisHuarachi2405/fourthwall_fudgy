@@ -1,0 +1,53 @@
+<section 
+  data-section-id="{{ section.id }}" 
+  data-section-type="rich-text"
+  data-testid="main.single.section"
+  class="rich-text rich-text--{{ section.id }}" 
+>
+  <div class="rich-text__inner">
+    <div class="container container--8 wrapper">
+      {% if section.settings.heading != blank %}
+        <div class="rich-text__header">
+          <h2 class="rich-text__heading">
+            {{ section.settings.heading }}
+          </h2>
+        </div>
+      {% endif %}
+
+      <div class="rich-text__text">
+        <div class="html-formatter html-formatter--center">
+          {{ section.settings.text }}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+  {
+    "name": "Text",
+    "group": "Layout",
+    "position": 0,
+    "description": "Add headlines and descriptions.",
+    "settings": [
+      {
+        "type": "text",
+        "id": "heading",
+        "label": "Heading",
+        "default": "About"
+      },
+      {
+        "type": "richtext",
+        "id": "text",
+        "label": "Text",
+        "default": "<p>This is a sample text about your amazing brand. Include as many details as you need! This is a sample text about your amazing brand. Include as many details as you need! This is a sample text about your amazing brand. Include as many details as you need!</p>"
+      }
+    ],
+    "presets": [
+      {
+        "category": "Content",
+        "name": "Text"
+      }
+    ]
+  }
+{% endschema %}

@@ -1,0 +1,16 @@
+<!-- TODO: Test whenever blog gets supported by Fourthwall. -->
+<div id="generated-article-liquid">
+  <article class="article">
+    <header class="article__header">
+      <h1 class="article__heading">{{ article.title }}</h1>
+    </header>
+
+    <div class="article__details">
+      <p>posted <span class="article-time">{{ article.created_at | date: "%Y %h" }}</span> by <span class="article__author">{{ article.author }}</span></p>
+    </div>
+
+    <div class="article__content">
+      {{ article.content }}
+    </div>
+  </article>
+</div>

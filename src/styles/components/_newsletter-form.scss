@@ -1,0 +1,19 @@
+.newsletter-form {
+  &__input-button-container {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    margin: -8px;
+  }
+
+  &__input {
+    flex-basis: 256px;
+    flex-grow: 9999;
+    padding: 8px;
+  }
+
+  &__button {
+    flex-grow: 1;
+    padding: 8px;
+  }
+}

@@ -1,0 +1,46 @@
+.cart {
+  $this: &;
+
+  position: relative;
+  z-index: 2;
+
+  @include media-query(sm) {
+    padding-bottom: 5px;
+  }
+
+  &.loading {
+    opacity: 0.5;
+  }
+
+  &__spinner {
+    display: none;
+    padding-top: 80px;
+    padding-bottom: 80px;
+
+    &--visible {
+      display: block;
+    }
+  }
+
+  &__header {
+    margin-bottom: 32px;
+
+    @include media-query(sm) {
+      margin-bottom: 48px;
+    }
+  }
+  
+  &__error {
+    margin-bottom: 16px;
+  }
+
+  &__items-header {
+    margin-bottom: 22px;
+    border-bottom: $divider-border;
+    padding-bottom: 15px;
+  }
+
+  &__footer {
+    margin-top: 16px;
+  }
+}

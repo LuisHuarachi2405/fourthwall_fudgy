@@ -1,0 +1,48 @@
+.donations {
+  position: relative;
+
+  overflow: hidden;
+
+  @include media-query(md) {
+    padding-top: 48px;
+    padding-bottom: 48px;
+  }
+
+  &__inner {
+    position: relative;
+    z-index: 1;
+  }
+
+  &__info {
+    text-align: center;
+
+    @include media-query(sm) {
+      margin-right: 48px;
+      text-align: left;
+    }
+  }
+
+  &__header {
+    margin-bottom: 24px;
+  }
+
+  &__heading {
+    font-size: font-size-heading(40px);
+
+    @include media-query(sm) {
+      font-size: font-size-heading(64px);
+    }
+  }
+
+  &__text {
+    color: get-color(text);
+  }
+
+  &__form-container {
+    margin-top: 32px;
+
+    @include media-query(md) {
+      margin-top: 0;
+    }
+  }
+}

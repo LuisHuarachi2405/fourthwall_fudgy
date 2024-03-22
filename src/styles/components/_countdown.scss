@@ -1,0 +1,128 @@
+.countdown {
+  $this: &;
+
+  &__timer {
+    display: flex;
+    grid-gap: 20px;
+    justify-content: center;
+
+    @include media-query(sm) {
+      grid-gap: 41px;
+    }
+
+    &--password {
+      grid-gap: initial;
+
+      #{$this}__time {
+        transition: $transition-time ease-out;
+        max-width: 80px;
+        width: 100%;
+        padding: 4px 11px 22px 11px;
+        color: get-color(on-background);
+        font-family: $font-family-heading;
+        font-weight: $font-weight-heading;
+        font-size: font-size(24px);
+        line-height: 1;
+
+        @include media-query(sm) {
+          max-width: 134px;
+          font-size: font-size(32px);
+          padding: 6px 17px 32px 17px;
+        }
+
+        &:after {
+          font-weight: $font-weight-base;
+          text-transform: $text-transform-base;
+          font-size: $font-size-small;
+          color: rgba(get-color(on-background-rgb), .6);
+
+          @include media-query(sm) {
+            font-size: $font-size-base;
+          }
+        }
+
+        &:not(:last-child) {
+          border-right: 1px solid rgba(get-color(on-background-rgb), 0.15);
+        }
+
+        &:before {
+          content: none;
+        }
+      }
+    }
+  }
+
+  &__time {
+    position: relative;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    width: 70px;
+    padding: 14px 11px;
+    color: get-color(on-primary);
+
+    font-size: font-size(16px);
+    line-height: 1;
+
+    @include media-query(sm) {
+      width: 80px;
+      font-size: font-size(18px);
+    }
+
+    &:after {
+      position: absolute;
+      font-family: $font-family-base;
+
+      width: 100%;
+      bottom: 0;
+
+      font-size: font-size(10px);
+      text-align: center;
+    }
+
+    &:before {
+      content: ":";
+
+      position: absolute;
+
+      width: 100%;
+      transform: translateX(15px);
+
+      text-align: right;
+
+      @include media-query(sm) {
+        transform: translateX(32px);
+      }
+    }
+
+    &--days {
+      &:after {
+        content: "days";
+      }
+    }
+
+    &--hours {
+      &:after {
+        content: "hours";
+      }
+    }
+
+    &--minutes {
+      &:after {
+        content: "minutes";
+      }
+    }
+
+    &--seconds {
+      &:after {
+        content: "seconds";
+      }
+
+      &:before {
+        display: none;
+      }
+    }
+  }
+}

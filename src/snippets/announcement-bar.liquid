@@ -1,0 +1,18 @@
+<section class="announcement-bar">
+  <div class="container wrapper">
+    <div class="announcement-bar__inner">
+      {% if section.settings.enable_countdown == true %}
+        {% include 'countdown',
+          countdown_type: section.settings.timer_type,
+          countdown_start_date: section.settings.countdown_start_date ,
+          countdown_end_date: section.settings.countdown_end_date,
+          label: section.settings.label
+        %}
+      {% else %}
+        <span class="announcement-bar__label">
+          {{ section.settings.label }}
+        </span>
+      {% endif %}
+    </div>
+  </div>
+</section>

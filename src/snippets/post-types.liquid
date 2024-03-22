@@ -1,0 +1,42 @@
+<div class="grid__column grid__column--12 grid__column--6@sm grid__column--4@md">
+  {% if post %}
+    {% if post.available %}
+      {% assign post_state = "available" %}
+      {% assign post_link = "/supporters/posts/" | append: post.mem_id %}
+    {% else %}
+      {% assign post_state = "unavailable" %}
+      {% assign post_link = "/supporters/payments/checkout/posts/" | append: post.mem_id | append: "/available_tiers" %}
+    {% endif %}
+
+    {% if no_user %}
+      {% assign post_state = no_user %}
+      {% assign post_link = "/supporters/payments/checkout/posts/" | append: post.mem_id | append: "/available_tiers" %}
+    {% endif %}
+
+    {% case post.type %}
+      {% when "Audio" %}
+        {% include 'post-tile', post_type: post.type, post_link: post_link, post_state: post_state, publish_date: post.publish_date, title: post.title, description: post.description, comments_count: post.comments_count, likes_count: post.likes_count, image: post.thumbnail_url, unavailable_image: post.unavailable_thumbnail_url %}
+
+      {% when "Video" %}
+        {% include 'post-tile', post_type: post.type, post_link: post_link, post_state: post_state, publish_date: post.publish_date, title: post.title, description: post.description, comments_count: post.comments_count, likes_count: post.likes_count, image: post.thumbnail_url, unavailable_image: post.unavailable_thumbnail_url %}
+
+      {% when "Text" %}
+        {% include 'post-tile', post_type: post.type, post_link: post_link, post_state: post_state, publish_date: post.publish_date, title: post.title, description: post.description, comments_count: post.comments_count, likes_count: post.likes_count %}
+
+      {% when "Poll" %}
+        {% include 'post-tile', post_type: post.type, post_link: post_link, post_state: post_state, publish_date: post.publish_date, title: post.title, description: post.description, comments_count: post.comments_count, likes_count: post.likes_count, options: post.options, status: post.status, finished_at: post.finished_at %}
+
+      {% when "VideoEmbed" %}
+        {% include 'post-tile', post_type: post.type, post_link: post_link, post_state: post_state, publish_date: post.publish_date, title: post.title, description: post.description, comments_count: post.comments_count, likes_count: post.likes_count, image: post.thumbnail_url, unavailable_image: post.unavailable_thumbnail_url %}
+
+      {% when "Image" %}
+        {% include 'post-tile', post_type: post.type, post_link: post_link, post_state: post_state, publish_date: post.publish_date, title: post.title, description: post.description, comments_count: post.comments_count, likes_count: post.likes_count, images: post.images, unavailable_image: post.unavailable_thumbnail_url %}
+
+      {% when "LiveStream" %}
+        {% include 'post-tile', post_type: post.type, post_link: post_link, post_state: post_state, publish_date: post.publish_date, title: post.title, description: post.description, comments_count: post.comments_count, likes_count: post.likes_count, image: post.thumbnail_url, unavailable_image: post.unavailable_thumbnail_url %}
+
+      {% else %}
+        {{ post.title }} is not a valid post
+    {% endcase %}
+  {% endif %}
+</div>

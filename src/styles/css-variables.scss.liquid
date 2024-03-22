@@ -1,0 +1,61 @@
+{% assign font_base = settings.type_base_font %}
+{% assign font_heading = settings.type_heading_font %}
+{% assign font_base_bold = font_base | font_modify: 'weight', 'bolder' %}
+{% assign font_base_italic = font_base | font_modify: 'style', 'italic' %}
+{% assign font_base_bold_italic = font_base_bold | font_modify: 'style', 'italic' %}
+
+{{ font_base_bold | font_face }}
+{{ font_base_italic | font_face }}
+{{ font_base_bold_italic | font_face }}
+
+{% if settings.change_products_background_color == "true" or settings.change_products_background_color == true %}
+  {% assign color_product_image_background = settings.color_product_image_background %}
+{% else %}
+  {% assign color_product_image_background = settings.color_on_background | color_modify: 'alpha', 0.05 %}
+{% endif %}
+
+{% if settings.image_aspect_ratio == "4-5" %}
+  {% assign img_ratio_padding = '125%' %}
+{% else %}
+  {% assign img_ratio_padding = '133.34%' %}
+{% endif %}
+
+{{ font_base | font_face }}
+{{ font_base_bold | font_face }}
+{{ font_heading | font_face }}
+
+:root {
+  --color-primary: {{ settings.color_primary }};
+  --color-on-primary: {{ settings.color_on_primary }};
+  --color-background: {{ settings.color_background }};
+  --color-on-background: {{ settings.color_on_background }};
+  --color-product-image-background: {{ color_product_image_background }};
+
+  --color-primary-rgb: {{ settings.color_primary | color_to_rgb | remove: 'rgb(' | remove: ')' }};
+  --color-on-primary-rgb: {{ settings.color_on_primary | color_to_rgb | remove: 'rgb(' | remove: ')' }};
+  --color-background-rgb: {{ settings.color_background | color_to_rgb | remove: 'rgb(' | remove: ')' }};
+  --color-on-background-rgb: {{ settings.color_on_background | color_to_rgb | remove: 'rgb(' | remove: ')' }};
+
+  --color-background-brightness: {{ settings.color_background | brightness_difference: '#000000' }};
+
+  --button-corner-radius: {{ settings.button_corner_radius | default: '0' }}px;
+  --input-corner-radius: {{ settings.input_corner_radius | default: '0' }}px;
+  --image-corner-radius: {{ settings.image_corner_radius | default: '0' }}px;
+
+  --font-family-base: {{ font_base.family }}, {{ font_base.fallback_families }};
+  --font-family-heading: {{ font_heading.family }}, {{ font_heading.fallback_families }};
+
+  --font-weight-base: {{ font_base.weight }};
+  --font-weight-base-bold: bolder;
+  --font-weight-heading: {{ font_heading.weight }};
+
+  --font-style-base: {{ font_base.style }};
+  --font-style-heading: {{ font_heading.style }};
+
+  --text-transform-base: {{ settings.type_base_text_transform }};
+  --text-transform-heading: {{ settings.type_heading_text_transform }};
+
+  --logo-width: {{ settings.logo_width }}px;
+
+  --image-ratio-padding: {{ img_ratio_padding }};
+}

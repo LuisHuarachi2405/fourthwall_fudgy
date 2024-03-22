@@ -1,0 +1,136 @@
+{% for option in product.options_with_values %}
+  <div class="product-option product-option--{{ option.type }}{% if option.type == 'COLOR' and option.selected_value != blank and option.values_metadata.size < 2 %} hidden{% endif %}">
+    {% if option.display_type == "color-swatch" %}
+      <p class="product-option__name">
+        Select {{ option.name }}:
+        <span 
+          data-product-selected-option-value-label="{{ option.position }}"
+          class="product-option__selected-value-label"
+        >
+          {{ product.selected_or_first_available_variant.option1 }}
+        </span>
+      </p>
+
+      <div class="product-option__values">
+        {% for value_metadata in option.values_metadata %}
+          {% assign value = value_metadata[1] %}
+          <div class="product-option__value product-option__value--regular">
+            <div class="color-swatch">
+              <input 
+                id="variant-{{ value.name | escape }}" 
+                name="option{{ option.position }}"
+                type="radio"                
+                value="{{ value.name | escape }}"
+                data-index="option{{ option.position }}"
+                data-product="single-option-selector"
+                data-product-option-type="{{ option.type }}"
+                class="color-swatch__input"
+                {%- if option.selected_value == value.name -%} checked{%- endif -%}
+              >
+              <label
+                for="variant-{{ value.name | escape }}"
+                class="color-swatch__label"
+                title="{{ value.name | escape }}"
+              >
+                <span 
+                  class="color-swatch__color"
+                  style="background-color:{{ value.colorSwatch }};"
+                >
+                </span>
+              </label>
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+
+      <p 
+        class="product-option__error" 
+        data-product="variant-error" 
+        data-variant-error-index="option{{ option.position }}"
+      >
+        Please select {{ option.name }}
+      </p>
+
+    {% elsif option.display_type == "radio" %}
+      <p class="product-option__name">
+        Select {{ option.name }}
+      </p>
+
+      <div class="product-option__values">
+        {% for value_metadata in option.values_metadata %}
+          {% assign value = value_metadata[1] %}
+          <div class="product-option__value{% if option.type == 'SIZE' %} product-option__value--size{% endif %}">
+            <div class="radio-button{% if option.type == 'SIZE' %} radio-button--narrow{% endif %}">
+              <input 
+                id="variant-{{ value.name | escape }}"
+                name="option{{ option.position }}"
+                type="radio"
+                value="{{ value.name | escape }}"
+                data-index="option{{ option.position }}"
+                data-product="single-option-selector"
+                data-product-option-type="{{ option.type }}"
+                class="radio-button__input{% if value.available == false %} unavailable{% endif %}"
+                data-testid="product.size"
+                {%- if option.selected_value == value.name -%} checked{%- endif -%}
+              >
+              <label
+                for="variant-{{ value.name | escape }}"
+                class="radio-button__label"
+              >{{ value.name }}</label>
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+
+      <p 
+        class="product-option__error" 
+        data-product="variant-error" 
+        data-variant-error-index="option{{ option.position }}"
+      >
+        Please select {{ option.name }}
+      </p>
+    
+    {% else %}
+      <p class="product-option__name">
+        Select {{ option.name }}
+      </p>
+
+      <div class="select-field select-field--base">
+        <select
+          name="option{{ option.position }}"
+          data-index="option{{ option.position }}"
+          data-product="single-option-selector"
+          data-product-option-type="{{ option.type }}"
+          class="select-field__select"
+        >
+          <option value="" disabled{% unless option.selected_value %} selected{% endunless %}>
+            Select {{ option.name }}
+          </option>
+          
+          {% for value_metadata in option.values_metadata %}
+            {% assign value = value_metadata[1] %}
+            <option
+              value="{{ value.name | escape }}" 
+              {%- if option.selected_value == value.name -%} selected{%- endif -%}
+            >
+              {{ value.name }}
+              {%- if value.available == false %} - Sold Out{% endif %}
+            </option>
+          {% endfor %}
+        </select>
+        
+        <span class="select-field__dropdown-icon">
+          {% include 'icon-dropdown' %}
+        </span>
+      </div>
+      
+      <p 
+        class="product-option__error" 
+        data-product="variant-error" 
+        data-variant-error-index="option{{ option.position }}"
+      >
+        Please select {{ option.name }}
+      </p>
+    {% endif %}
+  </div>
+{% endfor %}

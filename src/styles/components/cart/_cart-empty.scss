@@ -1,0 +1,21 @@
+.cart-empty {
+  text-align: center;
+
+  &__heading {
+    font-size: font-size-heading(32px);
+  }
+
+  &__content {
+    padding-top: 40px;
+    padding-bottom: 40px;
+
+    @include media-query(sm) {
+      padding-top: 110px;
+      padding-bottom: 110px;
+    }
+  }
+
+  &__cta {
+    margin-top: 50px;
+  }
+}

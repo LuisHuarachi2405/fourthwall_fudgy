@@ -1,0 +1,119 @@
+{%- assign donation_amounts = donation_amounts -%}
+{%- assign donation_cta_text = donation_cta_text -%}
+
+<div class="donation-form">
+  <form class="form" data-donation="form" method="GET" action="/donation/">
+    <div class="form__section">
+      <div data-input="container" class="input-field">
+        <input 
+          id="donation-name"
+          name="donor"
+          data-donation="name"
+          data-input="input"
+          class="input-field__input"
+          required
+        >
+
+        <label 
+          for="donation-name" 
+          class="input-field__label"
+        >
+          Your name
+        </label>
+      </div>
+      <div data-form-error="name" class="form__error"></div>
+    </div>
+
+    <div class="form__section">
+      <div data-input="container" class="input-field input-field--textarea">
+        <textarea 
+          id="donation-message"
+          name="message"
+          data-donation="message"
+          data-input="input"
+          rows="3"
+          class="input-field__input"
+          required
+        ></textarea>
+
+        <label 
+          for="donation-message" 
+          class="input-field__label"
+        >
+          Message
+        </label>
+      </div>
+      <div data-form-error="message" class="form__error"></div>
+    </div>
+
+    <div class="form__section">
+      <div class="grid grid--waffle grid--small">
+        {% for donation_amount in donation_amounts %}
+          <div class="grid__column grid__column--6 grid__column--3@sm">
+            <div class="radio-button">
+              <input 
+                name="amount-radio"
+                type="radio"
+                id="amount{{ forloop.index }}"
+                data-donation="amount-radio"
+                value="{{ donation_amount | times: 100 | money_without_currency }}"
+                class="radio-button__input"
+                {% if forloop.index == 1 %} checked{% endif %}
+              >
+              <label 
+                for="amount{{ forloop.index }}" 
+                class="radio-button__label"
+              >
+                {{ donation_amount | times: 100 | money_without_trailing_zeros }}
+              </label>
+            </div>
+          </div>
+        {% endfor %}
+
+        <div class="grid__column grid__column--6 grid__column--3@sm">
+          <div 
+            data-donation="amount-input-container"
+            data-input="container" 
+            class="input-field input-field--prefix input-field--bold input-field--as-button"
+          >
+            <input 
+              id="donation-amount-custom"
+              name="amount-custom" 
+              type="number"
+              data-donation="amount-input"
+              data-input="input"
+              class="input-field__input"
+              min="1"
+            >
+
+            <label 
+              for="donation-amount-custom" 
+              class="input-field__label"
+            >
+              Custom
+            </label>
+
+            <span class="input-field__prefix">{{ currency.symbol }}</span>
+          </div>
+        </div>
+      </div>
+      <div data-form-error="amount" class="form__error"></div>
+    </div>
+
+    <div class="form__section">
+      <input data-donation="amount" type="hidden" name="amount" value="" />
+      <input type="hidden" name="currency" value="{{ cart_currency }}" />
+
+      <button 
+        type="submit"
+        data-donation="submit"
+        class="button button--primary button--expand"
+      >
+        {{ donation_cta_text }}
+        <span class="button__spinner">
+          <div class="spinner spinner--small"></div>
+        </span>
+      </button>
+    </div>
+  </form>
+</div>

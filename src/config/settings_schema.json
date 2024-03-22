@@ -1,0 +1,272 @@
+[
+  {
+    "name": "theme_info",
+    "theme_name": "Oasis",
+    "theme_version": "2.2.16",
+    "theme_author": "Fourthwall",
+    "theme_documentation_url": "https://gitlab.com/fourthwall/themes/oasis",
+    "theme_support_url": "https://gitlab.com/fourthwall/themes/oasis",
+    "theme_features": [
+      "instagram:feed",
+      "tiktok:feed",
+      "twitch:giveaways",
+      "twitch:live",
+      "memberships:tiers"
+    ]
+  },
+  {
+    "name": "Logo & identity",
+    "settings": [
+      {
+        "type": "image_picker",
+        "id": "logo",
+        "label": "Logo",
+        "info": "Recommended aspect ratio: 3:2 (width:height)"
+      },
+      {
+        "type": "range",
+        "id": "logo_width",
+        "label": "Logo width",
+        "min": 40,
+        "max": 240,
+        "step": 1,
+        "unit": "px",
+        "default": 75
+      },
+      {
+        "type": "image_picker",
+        "id": "favicon",
+        "label": "Favicon",
+        "info": "Will be scaled to 32x32 pixels. Recommended aspect ratio: 1:1 (width:height)"
+      }
+    ]
+  },
+  {
+    "name": "Colors & appearance",
+    "settings": [
+      {
+        "type": "header",
+        "content": "General"
+      },
+      {
+        "type": "color",
+        "id": "color_primary",
+        "label": "Primary",
+        "default": "#632CFF"
+      },
+      {
+        "type": "color",
+        "id": "color_background",
+        "label": "Background",
+        "default": "#05040F"
+      },
+      {
+        "type": "color",
+        "id": "color_on_background",
+        "label": "Text",
+        "default": "#F9F8FF"
+      },
+      {
+        "type": "color",
+        "id": "color_on_primary",
+        "label": "Text over Primary",
+        "default": "#F9F8FF",
+        "info": "The color of text and other elements that go on top of backgrounds using the Primary color."
+      },
+      {
+        "type": "header",
+        "content": "Advanced"
+      },
+      {
+        "type": "range",
+        "id": "button_corner_radius",
+        "label": "Button corner radius",
+        "min": 0,
+        "max": 120,
+        "step": 1,
+        "unit": "px",
+        "default": 16
+      },
+      {
+        "type": "range",
+        "id": "input_corner_radius",
+        "label": "Input corner radius",
+        "min": 0,
+        "max": 20,
+        "step": 1,
+        "unit": "px",
+        "default": 16
+      },
+      {
+        "type": "range",
+        "id": "image_corner_radius",
+        "label": "Image corner radius",
+        "min": 0,
+        "max": 40,
+        "step": 1,
+        "unit": "px",
+        "default": 16
+      },
+      {
+        "type": "checkbox",
+        "id": "change_products_background_color",
+        "label": "Change products background color",
+        "default": false
+      },
+      {
+        "type": "color",
+        "id": "color_product_image_background",
+        "label": "Product photo background",
+        "default": "#ffffff"
+      },
+      {
+        "type": "header",
+        "content": "Layout"
+      },
+      {
+        "type": "select",
+        "id": "image_aspect_ratio",
+        "label": "Product photography aspect ratio",
+        "options": [
+          {
+            "value": "3-4",
+            "label": "3:4"
+          },
+          {
+            "value": "4-5",
+            "label": "4:5"
+          }
+        ],
+        "default": "3-4"
+      },
+      {
+        "type": "checkbox",
+        "id": "center_products",
+        "label": "Center products horizontally",
+        "default": true
+      },
+      {
+        "type": "select",
+        "id": "product_card_size",
+        "label": "Product tile size",
+        "options": [
+          {
+            "value": "regular",
+            "label": "Regular"
+          },
+          {
+            "value": "large",
+            "label": "Large"
+          },
+          {
+            "value": "extra-large",
+            "label": "Extra large"
+          }
+        ],
+        "default": "regular"
+      }
+    ]
+  },
+  {
+    "name": "Typography",
+    "settings": [
+      {
+        "type": "header",
+        "content": "Heading font"
+      },
+      {
+        "type": "font_picker",
+        "id": "type_heading_font",
+        "label": "Heading font",
+        "default": "poppins_n7"
+      },
+      {
+        "type": "select",
+        "id": "type_heading_text_transform",
+        "label": "Heading font transform",
+        "options": [
+          {
+            "value": "none",
+            "label": "None"
+          },
+          {
+            "value": "uppercase",
+            "label": "Uppercase"
+          }
+        ],
+        "default": "none"
+      },
+      {
+        "type": "header",
+        "content": "Base font"
+      },
+      {
+        "type": "font_picker",
+        "id": "type_base_font",
+        "label": "Base font",
+        "default": "suisse_intl_n4"
+      },
+      {
+        "type": "select",
+        "id": "type_base_text_transform",
+        "label": "Base font transform",
+        "options": [
+          {
+            "value": "none",
+            "label": "None"
+          },
+          {
+            "value": "uppercase",
+            "label": "Uppercase"
+          }
+        ],
+        "default": "none"
+      }
+    ]
+  },
+  {
+    "name": "Social links",
+    "settings": [
+      {
+        "type": "text",
+        "id": "social_youtube",
+        "label": "YouTube"
+      },
+      {
+        "type": "text",
+        "id": "social_instagram",
+        "label": "Instagram"
+      },
+      {
+        "type": "text",
+        "id": "social_facebook",
+        "label": "Facebook"
+      },
+      {
+        "type": "text",
+        "id": "social_twitter",
+        "label": "Twitter"
+      },
+      {
+        "type": "text",
+        "id": "social_tiktok",
+        "label": "TikTok"
+      },
+      {
+        "type": "text",
+        "id": "social_snapchat",
+        "label": "Snapchat"
+      },
+      {
+        "type": "text",
+        "id": "social_discord",
+        "label": "Discord"
+      },
+      {
+        "type": "text",
+        "id": "social_twitch",
+        "label": "Twitch"
+      }
+    ]
+  }
+]

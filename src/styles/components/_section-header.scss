@@ -1,0 +1,43 @@
+.section-header {
+  display: flex;
+  
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  
+  position: relative;
+  
+  margin-bottom: 24px;
+
+  text-align: center;
+
+  @include media-query(sm) {
+    text-align: left;
+  }
+
+  &__heading {
+    flex: 1 0 100%;
+    text-align: center;
+    font-size: font-size-heading(24px);
+
+    @include media-query(sm) {
+      flex-basis: auto;
+      text-align: left;
+      font-size: font-size-heading(32px);
+    }
+
+    &--center {
+      text-align: center;
+    }
+  }
+
+  &__cta {
+    margin-top: 16px;
+
+    @include media-query(sm) {
+      position: absolute;
+      margin-top: 0;
+      right: 0;
+    }
+  }
+}

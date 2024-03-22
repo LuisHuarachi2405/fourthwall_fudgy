@@ -1,0 +1,102 @@
+{%- assign og_title = page_title -%}
+{%- assign og_url = canonical_url -%}
+{%- assign og_type = 'website' -%}
+{%- assign og_description = page_description | default: shop.description | default: shop.name -%}
+{%- assign og_image_tags = '' -%}
+
+{%- assign twitter = shop.social_networks | where: "name", "twitter" | first -%}
+
+{% if request.page_type == 'product' %}
+  {%- assign og_title = product.title | strip_html -%}
+  {%- assign og_type = 'product' -%}
+
+  {% if product.images.size > 0 %}
+    {%- capture og_image_tags -%}
+      {% for image in product.images | limit: 3 -%}
+        <meta property="og:image" content="{{ image.src | product_img_url: '1200x' }}">
+        <meta property="og:image:secure_url" content="{{ image.src | product_img_url: '1200x' }}">
+      {% endfor -%}
+      <meta property="twitter:image" content="{{ product.images[0].src | product_img_url: '1200x' }}">
+    {%- endcapture -%}
+  {% endif %}
+
+{% elsif request.page_type == 'thank_you' %}
+  {%- assign creator = shop.name -%}
+
+  {% if twitter.handle != blank %}
+    {%- assign creator = twitter.handle | prepend: '@' -%}
+  {% endif %}
+
+  {%- assign og_title = creator | append: ' sent you a message!' -%}
+  {%- assign og_description = '' -%}
+
+  {% if thank_you.media_type.type == 'video' %}
+    {%- capture og_image_tags -%}
+      <meta property="og:image" content="{{ shop.url | append: thank_you.thumbnail_path }}">
+      <meta property="og:image:secure_url" content="{{ shop.url | append: thank_you.thumbnail_path }}">
+      <meta property="twitter:image" content="{{ shop.url | append: thank_you.thumbnail_path }}">
+    {%- endcapture -%}
+  {% endif %}
+
+{% elsif request.page_type == 'password' %}
+  {%- assign og_description = 'This website is coming soon.' -%}
+  {% if shop.og_image_url != blank %}
+    <meta property="og:image" content="{{ shop.og_image_url | img_url: '1200x' }}">
+    <meta property="og:image:secure_url" content="{{ shop.og_image_url | img_url: '1200x' }}">
+    <meta property="twitter:image" content="{{ shop.og_image_url | img_url: '1200x' }}">
+  {% endif %}
+  {%- assign og_image_tags = false -%}
+{% endif %}
+
+{% if og_image_tags == '' %}
+  {% if shop.og_image_url != blank %}
+    {%- capture og_image_tags -%}
+      <meta property="og:image" content="{{ shop.og_image_url | img_url: '1200x' }}">
+      <meta property="og:image:secure_url" content="{{ shop.og_image_url | img_url: '1200x' }}">
+      <meta property="twitter:image" content="{{ shop.og_image_url | img_url: '1200x' }}">
+    {%- endcapture -%}
+  {% else %}
+    {% assign collection = '' %}
+
+    {% if collections['all'] != blank %}
+      {% assign collection = collections['all'] %}
+    {% endif %}
+
+    {% if collection != '' and collection.products_count > 0 %}
+      {%- assign ogImageProduct = (collection.product_ids | fetch_products: '1' | first) -%}
+
+      {%- capture og_image_tags -%}
+        <meta property="og:image" content="{{ ogImageProduct.featured_image | img_url: '1200x' }}">
+        <meta property="og:image:secure_url" content="{{ ogImageProduct.featured_image | img_url: '1200x' }}">
+        <meta property="twitter:image" content="{{ ogImageProduct.featured_image | img_url: '1200x' }}">
+      {%- endcapture -%}
+    {% endif %}
+  {% endif %}
+{% endif %}
+
+<meta name="description" content="{{ og_description }}" />
+<meta property="og:site_name" content="{{ shop.name }}">
+<meta property="og:url" content="{{ og_url }}">
+<meta property="og:title" content="{{ og_title }}">
+<meta property="og:type" content="{{ og_type }}">
+<meta property="og:description" content="{{ og_description }}">
+
+{% if request.page_type == 'product' %}
+  <meta property="og:price:amount" content="{{ product.price | money_without_currency | strip_html }}">
+  <meta property="og:price:currency" content="{{ cart.currency.iso_code }}">
+{% elsif request.page_type == 'thank_you' %}
+  <meta property="og:video" content="{{ thank_you.media_url }}" />
+  <meta property="og:video:type" content="{{ thank_you.media_type.type }}" />
+{% endif %}
+
+{% if og_image_tags != '' and og_image_tags != false %}
+  {{ og_image_tags }}
+{% endif %}
+
+{% if twitter.handle != 'blank' %}
+  <meta name="twitter:site" content="{{ twitter.handle | prepend: '@' }}">
+  <meta name="twitter:creator" content="{{ twitter.handle | prepend: '@' }}">
+{% endif %}
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="{{ og_title }}">
+<meta name="twitter:description" content="{{ og_description }}">

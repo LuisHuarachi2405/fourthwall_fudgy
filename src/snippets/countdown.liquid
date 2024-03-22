@@ -1,0 +1,73 @@
+{%-liquid
+  assign label = section.settings.label | default: ''
+  assign date_format = '%a, %e %b %Y %H:%M:%S %z'
+  assign time_zone_offset = "now" | date: "%z"
+  assign time_zone_abbr = "now" | date: "%Z"
+  assign start_date = countdown_start_date | append: ' ' | append: time_zone_offset | date: date_format | default: ''
+  assign end_date = countdown_end_date | append: ' ' | append: time_zone_offset | date: date_format | default: ''
+
+  assign today_seconds = 'now' | date: '%s'
+  assign start_seconds = start_date | date: '%s'
+  assign end_seconds = end_date | date: '%s'
+  assign startDateDiffSeconds = start_seconds | minus: today_seconds
+  assign endDateDiffSeconds = end_seconds | minus: today_seconds
+
+  assign countdown_type = countdown_type
+-%}
+
+{% if countdown_type == 'custom' %}
+  {% if endDateDiffSeconds >= 0 %}
+    {% assign status = "ACTIVE" %}
+  {% else %}
+    {% assign status = "FINISHED" %}
+  {% endif %}
+{% endif %}
+
+<div class="countdown" data-countdown="countdown">
+  <div class="countdown__inner">
+    {% if countdown_type == 'custom' %}
+      <div class="countdown__timer{% if class_countdown %} {{ class_countdown }} {% endif %}" data-countdown>
+        <span data-countdown="live"></span>
+        <div class="countdown__time countdown__time--days" data-countdown="days">00</div>
+        <div class="countdown__time countdown__time--hours" data-countdown="hours">00</div>
+        <div class="countdown__time countdown__time--minutes" data-countdown="minutes">00</div>
+        <div class="countdown__time countdown__time--seconds" data-countdown="seconds">00</div>
+      </div>
+    {% else %}
+      <div class="grid">
+        <div class="grid__column grid__column--12 grid__column--4@sm">
+          <div class="countdown__section countdown__section--left">
+            <span data-countdown="label"></span>
+          </div>
+        </div>
+
+        <div class="grid__column grid__column--12 grid__column--4@sm">
+          <div class="countdown__section countdown__section--center">
+            {% if start_seconds > today_seconds %}Starts{% endif %} <span data-countdown="live"></span>
+          </div>
+        </div>
+
+        <div class="grid__column grid__column--12 grid__column--4@sm">
+          <div class="countdown__section countdown__section--right">
+            {% if end_seconds > today_seconds and start_seconds < today_seconds %}Ends{% endif %} <span data-countdown="ends"></span>
+          </div>
+        </div>
+      </div>
+    {% endif %}
+  </div>
+
+  <script type="application/json" data-countdown="json">
+    {
+      "dateFormat": "MM.DD.YY, hh:mm A",
+      "label": "{{ label | escape }}",
+      "startDate": "{{ start_date }}",
+      "endDate": "{{ end_date }}",
+      "timezoneOffset": "{{ time_zone_offset }}",
+      "timezoneAbbr": "{{ time_zone_abbr }}",
+      "daysFormat": "%RD %UD ",
+      "countdownFormat": "%RH %UH %RM %UM %RS %US REMAINS",
+      {% if countdown_type == 'custom' %}"countdownState": "{{ status }}",{% endif %}
+      "countdownType": "{{ countdown_type }}"
+    }
+  </script>
+</div>

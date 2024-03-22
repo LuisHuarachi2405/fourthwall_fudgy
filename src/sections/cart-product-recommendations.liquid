@@ -1,0 +1,45 @@
+{%- assign number_of_recommended_products = 4 -%}
+{%- assign recommended_products = nil | fetch_recommended_products: number_of_recommended_products -%}
+{%- assign grid_column_size_md = '3' -%}
+
+{% case settings.product_card_size %}
+  {% when 'large' %}
+    {%- assign grid_column_size_md = '4' -%}
+  {% when 'extra-large' %}
+    {%- assign grid_column_size_md = '6' -%}
+{% endcase %}
+
+{% capture product_recommendations %}
+  <section data-testid="main.single.section" class="cart-product-recommendations">
+    <div class="collection">
+      <div class="container wrapper">
+        <div class="collection__header">
+          <div class="section-header">
+            <h2 class="section-header__heading">You may also like</h2>
+          </div>
+        </div>
+
+        <div class="collection__grid">
+          <div class="grid grid--waffle{% if settings.center_products == true or settings.center_products == 'true' %} grid--center{% endif %}">
+            {% for recommended_product in recommended_products %}
+              <div class="grid__column grid__column--6 grid__column--{{ grid_column_size_md }}@md">
+                {% include 'product-tile' with product: recommended_product %}
+              </div>
+            {% endfor %}
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+{% endcapture %}
+
+{% if recommended_products != blank %}
+  {{ product_recommendations }}
+{% endif %}
+
+{% schema %}
+  {
+    "name": "Cart Product Recommendations"
+  }
+{% endschema %}
+

@@ -1,0 +1,27 @@
+.alert {
+  border-radius: $input-border-radius;
+  padding: 12px 20px;
+  font-size: $font-size-base;
+
+  &--center {
+    text-align: center;
+  }
+
+  &--success {
+    background-color: get-color(background-pale);
+    color: get-color(text);
+  }
+
+  &--error {
+    background-color: get-color(error);
+    color: get-color(white);
+  }
+
+  &__list {
+    list-style: disc inside;
+
+    & > * + * {
+      margin-top: 4px;
+    }
+  }
+}

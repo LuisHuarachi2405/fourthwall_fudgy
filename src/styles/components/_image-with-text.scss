@@ -1,0 +1,35 @@
+.image-with-text {
+  $this: &;
+
+  &__image {
+    margin: 0 auto;
+    border-radius: $img-border-radius;
+  }
+
+  &__content {
+    margin-top: 24px;
+
+    @include media-query(md) {
+      margin-left: 48px;
+    }
+
+    &--left {
+      @include media-query(md) {
+        margin-left: 0;
+        margin-right: 48px;
+      }
+    }
+  }
+
+  &__heading {
+    font-size: font-size-heading(24px);
+
+    @include media-query(sm) {
+      font-size: font-size-heading(32px);
+    }
+  }
+
+  &__text {
+    margin-top: 16px;
+  }
+}

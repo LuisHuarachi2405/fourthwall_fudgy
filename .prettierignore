@@ -1,0 +1,3 @@
+# unfortunately prettier doesn't support liquid yet
+*.liquid
+!*.scss.liquid

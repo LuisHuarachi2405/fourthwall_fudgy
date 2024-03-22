@@ -1,0 +1,116 @@
+{%- assign creator = shop.name -%}
+
+{%- assign twitter = shop.social_networks | where: "name", "twitter" | first -%}
+{% if twitter.handle != blank %}
+  {%- assign creator = twitter.handle | prepend: '@' -%}
+{% endif %}
+
+<section data-testid="main.single.section" class="thank-you">
+  <div class="container wrapper">
+    <div class="thank-you__main">
+      <div class="thank-you__video">
+        <div class="thank-you__video-inner">
+          <div class="video video--controls-visible" data-video="main">
+            <video class="video__video" data-video="video">
+              <source 
+                src="{{ thank_you.media_url }}" 
+                type="{{ thank_you.media_type.type }}/{{ thank_you.media_type.subtype }}"
+              >
+              Your browser does not support the video tag.
+            </video>
+            <div class="video__init" data-video="init-play">
+              <button class="video__button">
+                <i class="video__icon video__icon--init-play">
+                  {% render 'icon-play' %}
+                </i>
+              </button>
+            </div>
+            <div class="video__controls hidden" data-video="controls">
+              <div class="video__controls-section video__controls-section--left">
+                <div class="video__control">
+                  <button class="video__button" data-video="play-pause">
+                    <span class="video__icon" data-video-icon="play">
+                      {% include 'icon-play' %}
+                    </span>
+                    <span class="video__icon hidden" data-video-icon="pause">
+                      {% include 'icon-pause' %}
+                    </span>
+                  </button>
+                </div>
+
+                <div class="video__control">
+                  <div class="video__audio">
+                    <button class="video__button" data-video="mute">
+                      <span class="video__icon video__icon--mute" data-video-icon="volume">
+                        {% render 'icon-volume' %}
+                      </span>
+                      <span class="video__icon video__icon--mute hidden" data-video-icon="volume-mute">
+                        {% render 'icon-volume-mute' %}
+                      </span>
+                    </button>
+                    <div class="video__volume">
+                      <div class="range">
+                        <input class="range__input" min="0" max="1" step="0.01" type="range" data-video="volume" />
+                      </div>
+                    </div>
+                  </div>                
+                </div>
+              </div>
+
+              <div class="video__controls-section video__controls-section--right">
+                <div class="video__control">
+                  <button class="video__button" data-video="fullscreen">
+                    <span class="video__icon">
+                      {% render 'icon-fullscreen' %}
+                    </span>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>      
+      </div>
+
+      <div class="thank-you__info">
+        <h1 class="thank-you__heading">
+          {{ creator }} sent you a message! 🎉
+        </h1>
+
+        <div class="thank-you__cta">
+          <div class="thank-you__cta-item">
+            {%- capture twitter_share_text -%}
+              I just got a personal thank you from {{ creator }}!
+            {%- endcapture -%}
+
+            {%- capture twitter_url -%}
+            https://twitter.com/intent/tweet?text={{ twitter_share_text }}&url={{ canonical_url }}
+            {%- endcapture -%}
+            <a href="{{ twitter_url }}" target="_blank" class="share-button share-button--twitter" onclick="window.open(this.href,'targetWindow','toolbar=no,width=600,height=400')">
+              <span class="share-button__icon">
+                {% render 'icon-twitter' %}
+              </span>
+            Share on Twitter
+            </a>
+          </div>
+
+          <div class="thank-you__cta-item">
+            <a 
+              href="{{ thank_you.media_url }}" 
+              class="button button--outline" 
+              target="_blank" 
+              download
+            >
+              Download video
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+  {
+    "name": "Thank you"
+  }
+{% endschema %}

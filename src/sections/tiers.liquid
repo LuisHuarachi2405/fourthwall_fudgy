@@ -1,0 +1,194 @@
+<section data-testid="main.single.section" data-section-id="{{ section.id }}" class="tiers" id="tiers">
+  <div class="tiers__inner">
+    <div class="container wrapper">
+      {% if shop.metafields.memberships.enabled %}
+        {% if membership_tiers.size > 0 %}
+          {% if section.settings.heading != blank %}
+            <div class="section-header">
+              <h2 class="section-header__heading{% if section.settings.heading_alignment == 'center' %} section-header__heading--center{% endif %}">{{ section.settings.heading }}</h2>
+            </div>
+          {% endif %}
+
+          <div class="tiers__container{% if membership_tiers.size == 2 %} tiers__container--two-columns{% elsif membership_tiers.size == 1 %} tiers__container--one-column{% endif %}">
+            {% for tier in membership_tiers %}
+              <div class="tiers__tier">
+                <div class="tiers__tier-heading">
+                  {% if tier.image %}
+                    <div class="tiers__tier-image-container">
+                      <img class="tiers__tier-image" src="{{ tier.image | image_url: '270x' }}" alt="{{ tier.name }}">
+                    </div>
+                  {% endif %}
+
+                  <h3 class="tiers__tier-title">
+                    {{ tier.name }}
+                  </h3>
+                </div>
+
+                {% if tier.members_count %}
+                  <p class="tiers__tier-members-count">{{ tier.members_count }}{% if tier.members_count == 1 %} member{% else %} members{% endif %}</p>
+                {% endif %}
+
+                <p class="tiers__tier-price">
+                  {% if tier.compare_at_monthly_price %}
+                    <span class="tiers__tier-regular-price">{{ tier.monthly_price | money_no_exchange }}</span>
+                    {{ tier.compare_at_monthly_price | money_no_exchange }} first month
+                  {% else %}
+                    {{ tier.monthly_price | money_no_exchange }} per month
+                  {% endif %}
+                </p>
+
+                {% if tier.monthly_variant.discounts.twitch.after_discount_price != blank %}
+                  {% assign twitch_after_discount_price_number = tier.monthly_variant.discounts.twitch.after_discount_price | money_no_exchange_without_currency | remove: '.00' | remove: ',' | plus: 0 %}
+                  {% assign compare_at_monthly_price_number = tier.compare_at_monthly_price | money_no_exchange_without_currency | remove: '.00' | remove: ',' | plus: 0 %}
+
+                  {% assign cta_label_prefix = blank %}
+                  {% if tier.compare_at_monthly_price == blank or tier.compare_at_monthly_price and compare_at_monthly_price_number > twitch_after_discount_price_number %}
+                    {% assign cta_label_prefix = 'or ' %}
+                  {% elsif tier.compare_at_monthly_price and compare_at_monthly_price_number <= twitch_after_discount_price_number %}
+                    {% assign cta_label_prefix = 'then ' %}
+                  {% endif %}
+
+                  {% if cta_label_prefix != blank %}
+                    {% capture cta_label %}
+                      {{ cta_label_prefix }}{{ tier.monthly_variant.discounts.twitch.after_discount_price | money_no_exchange_with_currency | remove: '.00' | remove: ',' }} for <span class="tiers__tier-discount-cta-icon">{% include 'icon-twitch' %}</span> subs
+                    {% endcapture %}
+                    <div class="tiers__tier-discount-cta">
+                      <a
+                        href="{{ tier.url }}"
+                        class="tiers__tier-discount-cta-button"
+                      >
+                        {{ cta_label }}
+                        <div class="tiers__tier-discount-tooltip">
+                          <div class="tiers__tier-discount-tooltip-wrapper">Twitch subs receive this promotional price as long as they're subscribed on Twitch</div>
+                        </div>
+                      </a>
+                    </div>
+                  {% endif %}
+                {% endif %}
+
+                <div class="tiers__tier-cta">
+                  <a
+                    href="{{ tier.url }}"
+                    class="button button--primary button--small button--expand"
+                  >
+                    Join now
+                  </a>
+                </div>
+
+                {% if shop.metafields.twitch.live and shop.metafields.giveaways.enabled and tier.monthly_offer_id %}
+                  <div class="tiers__twitch-gift">
+                    <div data-modal-trigger="tiers"
+                      monthly-price="{{ tier.monthly_price | money_no_exchange_without_currency | remove: '.00' | remove: ',' }}"
+                      annual-price="{{ tier.annual_price | money_no_exchange_without_currency | remove: '.00' | remove: ',' }}"
+                      monthly-offer-id="{{ tier.monthly_offer_id }}"
+                      annual-offer-id="{{ tier.annual_offer_id }}"
+                      discount-first-month-price ="{{ tier.compare_at_monthly_price | money_no_exchange_without_currency | remove: '.00' | remove: ',' }}"
+                      discount-first-year-price ="{{ tier.compare_at_annual_price | money_no_exchange_without_currency | remove: '.00' | remove: ',' }}"
+                      tier-name="{{ tier.name }}"
+                      auto-trigger="#membershipsGift{{ tier.name | replace: ' ', '' }}"
+                    >
+                      <div class="button button--secondary button--small button--expand">
+                        <div class="tiers__twitch-gift-badge">
+                          <a
+                            href="{{ shop.metafields.twitch.url }}"
+                            target="_blank"
+                            class="tiers__twitch-gift-badge-icon"
+                          >
+                            {% if shop.metafields.twitch.live %}
+                              <div class="product-info__badge">
+                                Live
+                              </div>
+                            {% endif %}
+                            {% include 'icon-twitch' %}
+                          </a>
+                        </div>
+                        Gift to Twitch chat
+                      </div>
+                    </div>
+                  </div>
+                {% endif %}
+
+                {% if tier.annual_price %}
+                  <div class="tiers__tier-annual-info">
+                    <a href="{{ tier.annual_url }}" class="tiers__tier-annual-link">
+                      Save {{ tier.annual_discount_percentage }}% if you pay annually
+                    </a>
+                  </div>
+                {% endif %}
+
+                {% if tier.description %}
+                  <div class="tiers__tier-description">
+                    {{ tier.description }}
+                  </div>
+                {% endif %}
+
+                {% if tier.features.size > 0 %}
+                  <div class="tiers__tier-content">
+                    <ul class="tiers__tier-features">
+                      {% for feature in tier.features %}
+                        <li class="tiers__tier-feature">
+                          <span class="tiers__tier-feature-icon">{% include 'icon-tick' %}</span>
+                          {{ feature }}
+                        </li>
+                      {% endfor %}
+                    </ul>
+                  </div>
+                {% endif %}
+              </div>
+            {% endfor %}
+          </div>
+        {% else %}
+          {% if request.design_mode %}
+            You haven’t created any tiers yet. Go to Memberships -> Perks & tiers in your dashboard to create new tiers.
+          {% endif %}
+        {% endif %}
+      {% else %}
+        {% if request.design_mode %}
+          Memberships are not currently enabled. Visit the Memberships tab in your dashboard to add memberships to your account.
+        {% endif %}
+      {% endif %}
+    </div>
+  </div>
+</section>
+
+{% include 'tiers-modal' %}
+
+{% schema %}
+  {
+    "name": "Tiers",
+    "features": ["app:memberships"],
+    "group": "Memberships",
+    "position": 0,
+    "description": "Promote your memberships tiers.",
+    "settings": [
+      {
+        "type": "text",
+        "id": "heading",
+        "label": "Heading",
+        "default": "Become a member"
+      },
+      {
+        "type": "select",
+        "id": "heading_alignment",
+        "label": "Heading alignment",
+        "options": [
+          {
+            "value": "left",
+            "label": "Left"
+          },
+          {
+            "value": "center",
+            "label": "Center"
+          }
+        ],
+        "default": "center"
+      }
+    ],
+    "presets": [
+      {
+        "category": "Memberships",
+        "name": "Tiers"
+      }
+    ]
+  }
+{% endschema %}

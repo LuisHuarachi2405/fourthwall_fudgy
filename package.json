@@ -1,0 +1,42 @@
+{
+  "name": "oasis",
+  "version": "2.2.16",
+  "description": "Oasis - amazing Fourthwall theme.",
+  "main": "src/index.js",
+  "scripts": {
+    "start": "fourthwall-tools start",
+    "start:no-sass-root": "fourthwall-tools start --disableSassPartialRootUpload",
+    "start:dev": "fourthwall-tools start --dev",
+    "start:upload": "fourthwall-tools start --uploadOnInit",
+    "build": "fourthwall-tools build",
+    "build:ci": "fourthwall-tools build",
+    "build:upload": "fourthwall-tools build --upload"
+  },
+  "author": "",
+  "license": "ISC",
+  "publishConfig": {
+    "@fourthwall-themes:registry": "https://gitlab.com/api/v4/projects/14497189/packages/npm/"
+  },
+  "devDependencies": {
+    "@babel/core": "7.13.16",
+    "@babel/plugin-transform-react-jsx": "7.13.12",
+    "@babel/preset-env": "7.13.15",
+    "@babel/preset-react": "7.13.13",
+    "@fourthwall-themes/fourthwall-tools": "^0.9.0-0-g8e5fe38",
+    "classnames": "2.3.1",
+    "eslint": "7.24.0",
+    "eslint-config-standard-jsx": "10.0.0",
+    "eslint-plugin-jsx-a11y": "6.4.1",
+    "eslint-plugin-react": "7.23.2"
+  },
+  "dependencies": {
+    "axios": "0.21.1",
+    "dayjs": "1.10.4",
+    "ismobilejs": "1.1.1",
+    "normalize.css": "8.0.1",
+    "preact": "10.5.13",
+    "smoothscroll-polyfill": "0.4.4",
+    "tiny-slider": "2.9.3",
+    "validator": "13.6.0"
+  }
+}

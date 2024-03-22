@@ -1,0 +1,48 @@
+.form {
+  & > * + * {
+    margin-top: 16px;
+  }
+
+  &__section {
+    &--space-s {
+      margin-top: 8px;
+    }
+  }
+
+  &__error {
+    display: none;
+    margin-top: 3px;
+    color: get-color(error);
+    font-size: $font-size-small;
+
+    &.visible {
+      display: block;
+    }
+  }
+
+  &__response-container {
+    margin-top: 0;
+  }
+
+  &__response {
+    display: none;
+    margin-top: 16px;
+
+    &.visible {
+      display: block;
+    }
+
+    &--success {
+      color: get-color(text);
+    }
+
+    &--error {
+      color: get-color(error);
+    }
+    
+    &--spacing-bottom {
+      margin-top: 0;
+      margin-bottom: 16px;
+    }
+  }
+}

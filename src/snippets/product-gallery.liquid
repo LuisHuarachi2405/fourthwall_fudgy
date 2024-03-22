@@ -1,0 +1,62 @@
+<div class="gallery gallery--product">
+  <div class="gallery__main">
+    <div data-gallery="gallery" class="gallery__main-inner">
+      {% for image in product.selected_or_first_available_variant.images %}
+        <div
+          data-gallery="gallery-slide"
+          data-gallery-item-index="{{ forloop.index0 }}"
+          data-testid="product.image"
+          class="gallery__slide"
+        >
+          <div class="gallery__image-container gallery__image-container--background-color">
+            <div class="gallery__image">
+              <div
+                class="gallery__image-holder"
+                data-gallery="gallery-img-holder"
+                data-zoom-image="{{ image | img_url: '1920x' }}"
+              >
+                <img
+                  src="{{ image | img_url: '900x' }}"
+                  alt="{{ image | img_alt }}"
+                  class="gallery__image-object"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+    <div class="gallery__nav">
+      <button data-gallery="nav-prev" class="gallery__nav-item gallery__nav-item--prev">
+        {% include 'icon-chevron-left' %}
+      </button>
+      <button data-gallery="nav-next" class="gallery__nav-item gallery__nav-item--next">
+        {% include 'icon-chevron-right' %}
+      </button>
+    </div>
+  </div>
+
+  <div class="gallery__thumbs">
+    <div class="gallery-thumbs">
+      <div data-gallery="thumbnails" class="gallery-thumbs__main">
+        {% for image in product.selected_or_first_available_variant.images %}
+          <div data-gallery="thumbnail" class="gallery-thumbs__item">
+            <div class="gallery-thumbs__image-container gallery-thumbs__image-container--background-color">
+              <div class="gallery-thumbs__image">
+                <img class="gallery-thumbs__image-object" src="{{ image | img_url: '900x' }}" alt="{{ image | img_alt }}" />
+              </div>
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+      <div class="gallery-thumbs__nav">
+        <button data-gallery="thumbnails-nav-prev" class="gallery-thumbs__nav-item gallery-thumbs__nav-item--prev">
+          {% include 'icon-chevron-left' %}
+        </button>
+        <button data-gallery="thumbnails-nav-next" class="gallery-thumbs__nav-item gallery-thumbs__nav-item--next">
+          {% include 'icon-chevron-right' %}
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,142 @@
+<section
+  data-section-id="{{ section.id }}"
+  data-section-type="link-list"
+  class="link-list link-list--{{ section.id }}"
+>
+  <div class="link-list__inner">
+    <div class="container wrapper">
+      {% if section.settings.heading != blank or section.settings.text != blank %}
+        <div class="link-list__header link-list__header--{{ section.settings.content_alignment }}">
+          <h2 class="link-list__heading">
+            {{ section.settings.heading }}
+          </h2>
+
+          {% if section.settings.text != blank %}
+            <p class="link-list__text">
+              {{ section.settings.text }}
+            </p>
+          {% endif %}
+        </div>
+      {% endif %}
+      <div class="link-list__container link-list__container--{{ section.settings.style }}">
+        <div class="link-list__cta-container link-list__cta-container--{{ section.settings.style }}">
+          {% for block in section.blocks %}
+            {% case block.type %}
+              {% when 'button' %}
+                <div class="link-list__cta">
+                  <a href="{{ block.settings.url | localized_url }}" class="button button--primary button--expand" target="_blank">
+                    {% if block.settings.icon != blank %}
+                      <span class="button__icon">
+                        {{ block.settings.icon | icon }}
+                      </span>
+                    {% endif %}
+                    {{ block.settings.text }}
+                  </a>
+                </div>
+            {% endcase %}
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% schema %}
+  {
+    "name": "Links list",
+    "group": "Layout",
+    "position": 6,
+    "description": "Create a links list with icons and text.",
+    "max_blocks": 10,
+    "settings": [
+      {
+        "type": "header",
+        "content": "Text"
+      },
+      {
+        "type": "text",
+        "id": "heading",
+        "label": "Heading text (optional)",
+        "default": "Handy links"
+      },
+      {
+        "type": "text",
+        "id": "text",
+        "label": "Description text (optional)"
+      },
+      {
+        "type": "select",
+        "id": "content_alignment",
+        "label": "Content alignment",
+        "options": [
+          {
+            "value": "left",
+            "label": "Left"
+          },
+          {
+            "value": "center",
+            "label": "Center"
+          }
+        ],
+        "default": "center"
+      },
+      {
+        "type": "select",
+        "id": "style",
+        "label": "Style",
+        "options": [
+          {
+            "value": "single-column",
+            "label": "Single column"
+          },
+          {
+            "value": "horizontal",
+            "label": "Horizontal"
+          }
+        ],
+        "default": "single-column"
+      },
+      {
+        "type": "header",
+        "content": "Links"
+      }
+    ],
+    "blocks": [
+      {
+        "type": "button",
+        "name": "Link",
+        "settings": [
+          {
+            "type": "text",
+            "id": "text",
+            "label": "Link text",
+            "default": "Text"
+          },
+          {
+            "type": "url",
+            "id": "url",
+            "label": "Links to (URL)",
+            "default": "https://www.fourthwall.com"
+          },
+          {
+            "type": "resource",
+            "id": "icon",
+            "label": "Icon",
+            "resource": "icon",
+            "selection_type": "single"
+          }
+        ]
+      }
+    ],
+    "presets": [
+      {
+        "category": "Content",
+        "name": "Links list",
+        "blocks": [
+          {
+            "type": "button"
+          }
+        ]
+      }
+    ]
+  }
+{% endschema %}

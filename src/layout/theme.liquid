@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="{{ request.locale.iso_code }}">
+  <head>
+    <meta charset="utf-8" />
+    <meta content="IE=edge" http-equiv="X-UA-Compatible" />
+    <meta content="width=device-width,initial-scale=1" name="viewport" />
+    <meta content="0.1.31" name="version" />
+    <link rel="canonical" href="{{ canonical_url }}" />
+
+    <title>{{ page_title }}</title>
+
+    {% include 'head-meta-socials' %}
+
+    {% include 'head-favicons' %}
+
+    {{ 'vendor.css' | asset_url | stylesheet_tag }}
+
+    {{ 'styles/css-variables.scss.css' | asset_url | stylesheet_tag }}
+    {{ 'styles/theme.scss.css' | asset_url | stylesheet_tag }}
+
+    {{ content_for_header }}
+  </head>
+
+  {% assign page_url = page.handle | strip  | remove: ' page.handle' %}
+  {% assign request_page = request.path %}
+
+  {% if request.page_type == 'index' and page_url == 'MISSING' %}
+    {% assign request_page = '/' %}
+  {% endif %}
+
+  <body class="body">
+    {% include 'ie-support' %}
+
+    <div class="page">
+      <header class="page__header">
+        {% section 'header' %}
+      </header>
+
+      <div class="page__main">
+        {{ content_for_layout }}
+      </div>
+
+      <footer class="page__footer">
+        {% section 'footer' %}
+      </footer>
+    </div>
+
+    {% include 'theme-js-data' %}
+
+    {{ 'theme.js' | asset_url | script_tag }}
+
+    {{ content_for_footer }}
+  </body>
+</html>

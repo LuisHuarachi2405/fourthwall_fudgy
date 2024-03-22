@@ -1,0 +1,47 @@
+.cart-footer {
+  display: flex;
+  flex-wrap: wrap;
+
+  @include media-query(sm) {
+    justify-content: flex-end;
+    align-items: flex-end;
+  }
+
+  &__cta {
+    margin-top: 35px;
+
+    @include media-query(sm) {
+      margin-top: 45px;
+    }
+  }
+
+  &__cta-container {
+    width: 100%;
+
+    @include media-query(sm) {
+      flex: 0 1 320px;
+    }
+  }
+
+  &__totals {
+    border-top: $divider-border;
+    padding-top: 40px;
+
+    @include media-query(sm) {
+      padding-top: 50px;
+    }
+  }
+
+  &__continue {
+    width: 100%;
+    margin-top: 20px;
+
+    @include media-query(sm) {
+      order: -1;
+      flex: 0 1 320px;
+
+      margin-top: 0;
+      margin-right: auto;
+    }
+  }
+}
